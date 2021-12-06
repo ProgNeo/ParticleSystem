@@ -21,6 +21,7 @@ namespace ParticleSystem
             InitializeComponent();
             picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
 
+            /*
             _emitter = new Emitter
             {
                 Direction = 0,
@@ -29,24 +30,20 @@ namespace ParticleSystem
                 SpeedMax = 10,
                 ColorFrom = Color.HotPink,
                 ColorTo = Color.FromArgb(0, Color.White),
-                ParticlesPerTick = 10,
+                ParticlesPerTick = 1,
                 X = picDisplay.Width / 2,
                 Y = picDisplay.Height / 2,
             };
+            */
+            _emitter = new TopEmitter()
+            {
+                SpeedMin = 10,
+                SpeedMax = 10,
+                ParticlesPerTick = 10,
+                Width = picDisplay.Width
+            };
 
             _emitters.Add(_emitter);
-
-            _emitter.ImpactPoints.Add(new GravityPoint
-            {
-                X = picDisplay.Width / 2 + 100,
-                Y = picDisplay.Height / 2,
-            });
-            
-            _emitter.ImpactPoints.Add(new GravityPoint
-            {
-                X = picDisplay.Width / 2 - 100,
-                Y = picDisplay.Height / 2,
-            });
         }
         
         private void timer1_Tick(object sender, EventArgs e)
@@ -60,8 +57,6 @@ namespace ParticleSystem
                 emitter.Render(g); 
             }
 
-
-            afuksahfk.Text = _emitter.Particles.Count.ToString();
             picDisplay.Invalidate();
         }
 
@@ -91,6 +86,69 @@ namespace ParticleSystem
                 {
                     point.Power = tbGraviton.Value;
                 }
+            }
+        }
+
+        private void picDisplay_MouseClick(object sender, MouseEventArgs e)
+        {
+            switch (cbColorPoint.Text)
+            {
+                case "Красный":
+                    _emitter.ImpactPoints.Add(new RepaintingPoint()
+                    {
+                        X = e.X,
+                        Y = e.Y,
+                        RepaintTo = Color.Red
+                    });
+                    break;
+                case "Ораньжевый":
+                    _emitter.ImpactPoints.Add(new RepaintingPoint()
+                    {
+                        X = e.X,
+                        Y = e.Y,
+                        RepaintTo = Color.Orange
+                    });
+                    break;
+                case "Жёлтый":
+                    _emitter.ImpactPoints.Add(new RepaintingPoint()
+                    {
+                        X = e.X,
+                        Y = e.Y,
+                        RepaintTo = Color.Yellow
+                    });
+                    break;
+                case "Зелёный":
+                    _emitter.ImpactPoints.Add(new RepaintingPoint()
+                    {
+                        X = e.X,
+                        Y = e.Y,
+                        RepaintTo = Color.LimeGreen
+                    });
+                    break;
+                case "Голубой":
+                    _emitter.ImpactPoints.Add(new RepaintingPoint()
+                    {
+                        X = e.X,
+                        Y = e.Y,
+                        RepaintTo = Color.Cyan
+                    });
+                    break;
+                case "Синий":
+                    _emitter.ImpactPoints.Add(new RepaintingPoint()
+                    {
+                        X = e.X,
+                        Y = e.Y,
+                        RepaintTo = Color.Blue
+                    });
+                    break;
+                case "Фиолетовый":
+                    _emitter.ImpactPoints.Add(new RepaintingPoint()
+                    {
+                        X = e.X,
+                        Y = e.Y,
+                        RepaintTo = Color.MediumPurple
+                    });
+                    break;
             }
         }
     }

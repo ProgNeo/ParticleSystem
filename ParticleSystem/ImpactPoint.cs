@@ -2,7 +2,7 @@
 
 namespace ParticleSystem
 {
-    public abstract class IImpactPoint
+    public abstract class ImpactPoint
     {
         public float X; 
         public float Y;

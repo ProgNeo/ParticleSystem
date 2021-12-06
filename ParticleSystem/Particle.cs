@@ -28,8 +28,7 @@ namespace ParticleSystem
             SpeedX = (float)(Math.Cos(direction / 180 * Math.PI) * speed);
             SpeedY = -(float)(Math.Sin(direction / 180 * Math.PI) * speed);
 
-            Radius = 2 + Rand.Next(10);
-            Life = 20 + Rand.Next(100);
+            Life = Rand.Next(60, 160);
         }
 
         public virtual void Draw(Graphics g)

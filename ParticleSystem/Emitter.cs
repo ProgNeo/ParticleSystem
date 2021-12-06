@@ -7,7 +7,7 @@ namespace ParticleSystem
     public class Emitter
     {
         public List<Particle> Particles = new();
-        public List<IImpactPoint> ImpactPoints = new();
+        public List<ImpactPoint> ImpactPoints = new();
 
         public int MousePositionX;
         public int MousePositionY;

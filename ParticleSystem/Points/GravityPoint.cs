@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace ParticleSystem.Points
 {
-    public class GravityPoint : IImpactPoint
+    public class GravityPoint : ImpactPoint
     {
         public int Power = 100;
 

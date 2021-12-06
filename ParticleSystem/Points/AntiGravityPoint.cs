@@ -2,7 +2,7 @@
 
 namespace ParticleSystem.Points
 {
-    public class AntiGravityPoint : IImpactPoint
+    public class AntiGravityPoint : ImpactPoint
     {
         public int Power = 100;
         public override void ImpactParticle(Particle particle)
