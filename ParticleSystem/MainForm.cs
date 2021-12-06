@@ -7,28 +7,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ParticleSystem.Emitters;
+using ParticleSystem.Points;
 
 namespace ParticleSystem
 {
     public partial class MainForm : Form
     {
-        private readonly Emitter _emitter = new();
+        private readonly List<Emitter> _emitters = new();
+        private readonly Emitter _emitter;
         public MainForm()
         {
             InitializeComponent();
             picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
 
-            _emitter.GravityPoints.Add(new Point(
-                picDisplay.Width / 2, picDisplay.Height / 2
-            ));
-       
-            _emitter.GravityPoints.Add(new Point(
-                (int)(picDisplay.Width * 0.75), picDisplay.Height / 2
-            ));
+            _emitter = new Emitter
+            {
+                Direction = 0,
+                Spreading = 10,
+                SpeedMin = 10,
+                SpeedMax = 10,
+                ColorFrom = Color.Gold,
+                ColorTo = Color.FromArgb(0, Color.Red),
+                ParticlesPerTick = 10,
+                X = picDisplay.Width / 2,
+                Y = picDisplay.Height / 2,
+            };
 
-            _emitter.GravityPoints.Add(new Point(
-                (int)(picDisplay.Width * 0.25), picDisplay.Height / 2
-            ));
+            _emitters.Add(_emitter);
         }
         
         private void timer1_Tick(object sender, EventArgs e)
@@ -48,6 +54,12 @@ namespace ParticleSystem
         {
             _emitter.MousePositionX = e.X;
             _emitter.MousePositionY = e.Y;
+        }
+
+        private void tbDirection_Scroll(object sender, EventArgs e)
+        {
+            _emitter.Direction = tbDirection.Value;
+            lblDirection.Text = $@"{tbDirection.Value}°"; 
         }
     }
 }
