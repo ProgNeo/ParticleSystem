@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,15 +16,11 @@ namespace ParticleSystem
         private float _direction;
         private float _speed;
 
-        private static readonly Random _random = new();
+        private float _life;
 
-        public int Radius => _radius;
-        public float X => _x;
-        public float Y => _y;
-        public float Direction => _direction;
-        public float Speed => _speed;
+        public static readonly Random Rand = new();
 
-        /*public int Radius
+        public int Radius
         {
             get => _radius;
             set => _radius = value;
@@ -47,20 +44,41 @@ namespace ParticleSystem
         {
             get => _speed;
             set => _speed = value;
-        }*/
+        }
+        public float Life
+        {
+            get => _life;
+            set => _life = value;
+        }
+
         public Particle()
         {
-            _direction = _random.Next(360);
-            _speed = 2 + _random.Next(10);
-            _radius = 2 + _random.Next(10);
+            _direction = Rand.Next(360);
+            _speed = 2 + Rand.Next(10);
+            _radius = 2 + Rand.Next(10);
+            _life = 20 + Rand.Next(100);
         }
         public Particle(int x, int y) 
         {
-            _direction = _random.Next(360);
-            _speed = 2 + _random.Next(10);
-            _radius = 2 + _random.Next(10);
+            _direction = Rand.Next(360);
+            _speed = 2 + Rand.Next(10);
+            _radius = 2 + Rand.Next(10);
+            _life = 20 + Rand.Next(100);
             _x = x;
             _y = y;
+        }
+        public void Draw(Graphics graphics)
+        {
+            var k = Math.Min(1f, Life / 100);
+            var alpha = (int)(k * 255);
+            
+            var color = Color.FromArgb(alpha, Color.Black);
+            var b = new SolidBrush(color);
+
+            graphics.FillEllipse(b, _x - _radius, _y - _radius, 
+                _radius * 2, _radius * 2);
+
+            b.Dispose();
         }
     }
 }
