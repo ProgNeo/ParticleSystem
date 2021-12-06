@@ -10,33 +10,29 @@ namespace ParticleSystem
 {
     public class Particle
     {
-        public float X;
-        public float Y;
         public int Radius;
+        public float X; 
+        public float Y; 
 
-        public float Direction;
-        public float Speed;
-        public float Life;
+        public float SpeedX; 
+        public float SpeedY; 
+        public float Life; 
 
-        public static readonly Random Rand = new();
-
+        public static Random Rand = new();
+        
         public Particle()
         {
-            Direction = Rand.Next(0, 360);
-            Speed = Rand.Next(1, 5);
-            Radius = Rand.Next(2, 10);
-            Life = Rand.Next(20, 100);
+            var direction = (double)Rand.Next(360);
+            var speed = 1 + Rand.Next(10);
+
+            SpeedX = (float)(Math.Cos(direction / 180 * Math.PI) * speed);
+            SpeedY = -(float)(Math.Sin(direction / 180 * Math.PI) * speed);
+
+            Radius = 2 + Rand.Next(10);
+            Life = 20 + Rand.Next(100);
         }
-        public Particle(int x, int y) 
-        {
-            Direction = Rand.Next(0, 360);
-            Speed = Rand.Next(1, 5);
-            Radius = Rand.Next(2, 10);
-            Life = Rand.Next(20, 100);
-            X = x;
-            Y = y;
-        }
-        public virtual void Draw(Graphics graphics)
+
+        public virtual void Draw(Graphics g)
         {
             var k = Math.Min(1f, Life / 100);
             var alpha = (int)(k * 255);
@@ -44,7 +40,7 @@ namespace ParticleSystem
             var color = Color.FromArgb(alpha, Color.Black);
             var b = new SolidBrush(color);
 
-            graphics.FillEllipse(b, X - Radius, Y - Radius, Radius * 2, Radius * 2);
+            g.FillEllipse(b, X - Radius, Y - Radius, Radius * 2, Radius * 2);
 
             b.Dispose();
         }
@@ -64,10 +60,11 @@ namespace ParticleSystem
                 (int)(color2.B * k + color1.B * (1 - k))
             );
         }
-        
+
+
         public override void Draw(Graphics g)
         {
-            var k = MathF.Min(1f, Life / 100);
+            float k = Math.Min(1f, Life / 100);
             
             var color = MixColor(ToColor, FromColor, k);
             var b = new SolidBrush(color);
@@ -77,4 +74,5 @@ namespace ParticleSystem
             b.Dispose();
         }
     }
+
 }
