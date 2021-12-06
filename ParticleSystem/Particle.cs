@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,65 +10,33 @@ namespace ParticleSystem
 {
     public class Particle
     {
-        private int _radius;
-        private float _x; 
-        private float _y;
+        public float X;
+        public float Y;
+        public int Radius;
 
-        private float _direction;
-        private float _speed;
-
-        private float _life;
+        public float Direction;
+        public float Speed;
+        public float Life;
 
         public static readonly Random Rand = new();
 
-        public int Radius
-        {
-            get => _radius;
-            set => _radius = value;
-        }
-        public float X
-        {
-            get => _x;
-            set => _x = value;
-        }
-        public float Y
-        {
-            get => _y;
-            set => _y = value;
-        }
-        public float Direction
-        {
-            get => _direction;
-            set => _direction = value;
-        }
-        public float Speed
-        {
-            get => _speed;
-            set => _speed = value;
-        }
-        public float Life
-        {
-            get => _life;
-            set => _life = value;
-        }
-
         public Particle()
         {
-            _direction = Rand.Next(360);
-            _speed = 2 + Rand.Next(10);
-            _radius = 2 + Rand.Next(10);
-            _life = 20 + Rand.Next(100);
+            Direction = Rand.Next(0, 360);
+            Speed = Rand.Next(1, 5);
+            Radius = Rand.Next(2, 10);
+            Life = Rand.Next(20, 100);
         }
         public Particle(int x, int y) 
         {
-            _direction = Rand.Next(360);
-            _speed = 2 + Rand.Next(10);
-            _radius = 2 + Rand.Next(10);
-            _life = 20 + Rand.Next(100);
-            _x = x;
-            _y = y;
+            Direction = Rand.Next(0, 360);
+            Speed = Rand.Next(1, 5);
+            Radius = Rand.Next(2, 10);
+            Life = Rand.Next(20, 100);
+            X = x;
+            Y = y;
         }
-        public void Draw(Graphics graphics)
+        public virtual void Draw(Graphics graphics)
         {
             var k = Math.Min(1f, Life / 100);
             var alpha = (int)(k * 255);
@@ -75,8 +44,35 @@ namespace ParticleSystem
             var color = Color.FromArgb(alpha, Color.Black);
             var b = new SolidBrush(color);
 
-            graphics.FillEllipse(b, _x - _radius, _y - _radius, 
-                _radius * 2, _radius * 2);
+            graphics.FillEllipse(b, X - Radius, Y - Radius, Radius * 2, Radius * 2);
+
+            b.Dispose();
+        }
+    }
+
+    public class ParticleColorful : Particle
+    {
+        public Color FromColor;
+        public Color ToColor;
+        
+        public static Color MixColor(Color color1, Color color2, float k)
+        {
+            return Color.FromArgb(
+                (int)(color2.A * k + color1.A * (1 - k)),
+                (int)(color2.R * k + color1.R * (1 - k)),
+                (int)(color2.G * k + color1.G * (1 - k)),
+                (int)(color2.B * k + color1.B * (1 - k))
+            );
+        }
+        
+        public override void Draw(Graphics g)
+        {
+            var k = MathF.Min(1f, Life / 100);
+            
+            var color = MixColor(ToColor, FromColor, k);
+            var b = new SolidBrush(color);
+
+            g.FillEllipse(b, X - Radius, Y - Radius, Radius * 2, Radius * 2);
 
             b.Dispose();
         }

@@ -41,11 +41,12 @@
             this.picDisplay.Size = new System.Drawing.Size(900, 488);
             this.picDisplay.TabIndex = 0;
             this.picDisplay.TabStop = false;
+            this.picDisplay.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picDisplay_MouseMove);
             // 
             // timer1
             // 
             this.timer1.Enabled = true;
-            this.timer1.Interval = 40;
+            this.timer1.Interval = 10;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // MainForm
