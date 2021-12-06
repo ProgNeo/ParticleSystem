@@ -27,26 +27,41 @@ namespace ParticleSystem
                 Spreading = 10,
                 SpeedMin = 10,
                 SpeedMax = 10,
-                ColorFrom = Color.Gold,
-                ColorTo = Color.FromArgb(0, Color.Red),
+                ColorFrom = Color.HotPink,
+                ColorTo = Color.FromArgb(0, Color.White),
                 ParticlesPerTick = 10,
                 X = picDisplay.Width / 2,
                 Y = picDisplay.Height / 2,
             };
 
             _emitters.Add(_emitter);
+
+            _emitter.ImpactPoints.Add(new GravityPoint
+            {
+                X = picDisplay.Width / 2 + 100,
+                Y = picDisplay.Height / 2,
+            });
+            
+            _emitter.ImpactPoints.Add(new GravityPoint
+            {
+                X = picDisplay.Width / 2 - 100,
+                Y = picDisplay.Height / 2,
+            });
         }
         
         private void timer1_Tick(object sender, EventArgs e)
         {
-            _emitter.UpdateState(); 
+            var g = Graphics.FromImage(picDisplay.Image);
+            g.Clear(Color.Black);
 
-            using (var g = Graphics.FromImage(picDisplay.Image))
+            foreach (var emitter in _emitters)
             {
-                g.Clear(Color.Black);
-                _emitter.Render(g);
+                emitter.UpdateState(); 
+                emitter.Render(g); 
             }
 
+
+            afuksahfk.Text = _emitter.Particles.Count.ToString();
             picDisplay.Invalidate();
         }
 
@@ -60,6 +75,23 @@ namespace ParticleSystem
         {
             _emitter.Direction = tbDirection.Value;
             lblDirection.Text = $@"{tbDirection.Value}°"; 
+        }
+
+        private void tbSpreading_Scroll(object sender, EventArgs e)
+        {
+            _emitter.Spreading = tbSpreading.Value;
+            lblSpreading.Text = $@"{tbSpreading.Value}°";
+        }
+
+        private void tbGraviton_Scroll(object sender, EventArgs e)
+        {
+            foreach (var p in _emitter.ImpactPoints)
+            {
+                if (p is GravityPoint point) 
+                {
+                    point.Power = tbGraviton.Value;
+                }
+            }
         }
     }
 }

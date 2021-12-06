@@ -10,15 +10,15 @@ namespace ParticleSystem
 {
     public class Particle
     {
-        public int Radius;
-        public float X; 
+        public int Radius; 
+        public float X;
         public float Y; 
 
         public float SpeedX; 
         public float SpeedY; 
         public float Life; 
 
-        public static Random Rand = new();
+        public static Random Rand = new Random();
         
         public Particle()
         {
@@ -64,7 +64,7 @@ namespace ParticleSystem
 
         public override void Draw(Graphics g)
         {
-            float k = Math.Min(1f, Life / 100);
+            var k = Math.Min(1f, Life / 100);
             
             var color = MixColor(ToColor, FromColor, k);
             var b = new SolidBrush(color);
@@ -74,5 +74,6 @@ namespace ParticleSystem
             b.Dispose();
         }
     }
+
 
 }
