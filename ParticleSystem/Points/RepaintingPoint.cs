@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using ParticleSystem.Particles;
 
 namespace ParticleSystem.Points
 {
@@ -13,7 +14,7 @@ namespace ParticleSystem.Points
             var gY = Y - particle.Y;
             var r = Math.Sqrt(gX * gX + gY * gY);
 
-            if (!(r + particle.Radius / 2 <= Diametr / 2)) return;
+            if (!(r + particle.Radius / 2f < Diametr / 2f)) return;
 
             if (particle is not ParticleColorful colorful) return;
             
@@ -24,8 +25,8 @@ namespace ParticleSystem.Points
         {
             graphics.DrawEllipse(
                 new Pen(RepaintTo),
-                X - Diametr / 2,
-                Y - Diametr / 2,
+                X - Diametr / 2f,
+                Y - Diametr / 2f,
                 Diametr,
                 Diametr
             );

@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
+using ParticleSystem.Particles;
 
-namespace ParticleSystem
+namespace ParticleSystem.Points
 {
     public abstract class ImpactPoint
     {

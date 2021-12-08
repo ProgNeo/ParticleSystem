@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using ParticleSystem.Particles;
+using ParticleSystem.Points;
 
-namespace ParticleSystem
+namespace ParticleSystem.Emitters
 {
     public class Emitter
     {
@@ -37,9 +39,7 @@ namespace ParticleSystem
             particle.X = X;
             particle.Y = Y;
 
-            var direction = Direction
-                + (double)Particle.Rand.Next(Spreading)
-                - Spreading / 2;
+            var direction = Direction + (double)Particle.Rand.Next(Spreading) - Spreading / 2f;
 
             if (particle is ParticleColorful colorful)
             {
@@ -66,7 +66,7 @@ namespace ParticleSystem
             return particle;
         }
 
-        public void UpdateState()
+        public virtual void UpdateState()
         {
             var particlesToCreate = ParticlesPerTick;
 
