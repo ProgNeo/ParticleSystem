@@ -19,9 +19,9 @@ namespace ParticleSystem
             picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
 
             var particlesToCreate = _random.Next(0, 5);
-            var orbitDiametr = _random.Next(25, 30);
+            var orbitDiametr = _random.Next(150, 170);
             
-            _emitter = new PlanetEmitter()
+            _emitter = new SunEmitter()
             {
                 Direction = 0,
                 Spreading = 1,
@@ -33,8 +33,8 @@ namespace ParticleSystem
                 SpeedMax = 1, 
                 ParticlesToCreate = particlesToCreate,
                 OrbitDiametr = orbitDiametr,
-                X = picDisplay.Width / 2,
-                Y = picDisplay.Height / 2
+                X = picDisplay.Width / 2f,
+                Y = picDisplay.Height / 2f
             };
 
             _emitters.Add(_emitter);

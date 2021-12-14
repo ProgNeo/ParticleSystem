@@ -43,6 +43,8 @@ namespace ParticleSystem.Emitters
 
                 Particles[i].X += Particles[i].SpeedX;
                 Particles[i].Y += Particles[i].SpeedY;
+                ImpactPoints[i].X = this.X;
+                ImpactPoints[i].Y = this.Y;
             }
 
             while (ParticlesToCreate >= 1)

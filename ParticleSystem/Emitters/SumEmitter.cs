@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using ParticleSystem.Particles;
 using ParticleSystem.Points;
 
@@ -44,8 +45,15 @@ namespace ParticleSystem.Emitters
 
                 Particles[i].X += Particles[i].SpeedX;
                 Particles[i].Y += Particles[i].SpeedY;
-            }
 
+                foreach (var point in Emmiters.Cast<PlanetEmitter>()
+                             .SelectMany(emiiter => emiiter.ImpactPoints))
+                {
+                    point.X = Particles[i].X;
+                    point.Y = Particles[i].Y;
+                }
+            }
+            
             while (ParticlesToCreate >= 1)
             {
                 ParticlesToCreate -= 1;
@@ -58,7 +66,7 @@ namespace ParticleSystem.Emitters
                 };
 
                 var particlesToCreate = Rand.Next(0, 5);
-                var orbitDiametr = Rand.Next(150, 170);
+                var orbitDiametr = Rand.Next(25, 30);
 
                 var emitter = new PlanetEmitter()
                 {
@@ -73,7 +81,7 @@ namespace ParticleSystem.Emitters
                     ParticlesToCreate = particlesToCreate,
                     OrbitDiametr = orbitDiametr,
                     X = this.X,
-                    Y = this.Y
+                    Y = this.Y - OrbitDiametr
                 };
 
                 Emmiters.Add(emitter);

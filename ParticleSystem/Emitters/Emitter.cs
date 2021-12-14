@@ -17,8 +17,8 @@ namespace ParticleSystem.Emitters
         public float GravitationX = 0;
         public float GravitationY = 1;
 
-        public int X;
-        public int Y;
+        public float X;
+        public float Y;
         public int Direction = 0;
         public int Spreading = 360;
         public int SpeedMin = 1;
