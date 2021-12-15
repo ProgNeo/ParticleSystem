@@ -18,7 +18,7 @@ namespace ParticleSystem
             picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
 
             var particlesToCreate = _random.Next(2, 8);
-            var orbitDiametr = _random.Next(150, 170);
+            var orbitRadius = _random.Next(150, 170);
             
             _emitter = new SunEmitter()
             {
@@ -31,7 +31,7 @@ namespace ParticleSystem
                 SpeedMin = 1,
                 SpeedMax = 1,
                 ParticlesToCreate = particlesToCreate,
-                OrbitDiametr = orbitDiametr,
+                OrbitRadius = orbitRadius,
                 X = picDisplay.Width / 2f,
                 Y = picDisplay.Height / 2f
             };
@@ -53,9 +53,18 @@ namespace ParticleSystem
                         planetEmitter.UpdateState();
                         planetEmitter.Render(graphics);
                     }
+                    sunEmitter.RingEmitter?.UpdateState();
+                    sunEmitter.RingEmitter?.Render(graphics);
                 }
                 emitter.UpdateState();
                 emitter.Render(graphics);
+                graphics.FillEllipse(
+                    new SolidBrush(Color.Orange), 
+                    picDisplay.Width / 2 - 75,
+                    picDisplay.Height / 2 - 75,
+                    150, 
+                    150
+                    );
             }
 
             picDisplay.Invalidate();

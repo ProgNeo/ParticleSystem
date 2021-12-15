@@ -1,37 +1,38 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 using ParticleSystem.Particles;
 
 namespace ParticleSystem.Points
 {
-    public class GravityPoint : ImpactPoint
+    public class RingPoint : ImpactPoint
     {
-        public float Power = 100;
+        public float Diametr = 100;
         // ReSharper disable once InconsistentNaming
         public Color mColor = Color.White;
-
+        
         public override void ImpactParticle(Particle particle)
         {
             var gX = X - particle.X;
             var gY = Y - particle.Y;
             var r = Math.Sqrt(gX * gX + gY * gY);
 
-            if (!(r + particle.Radius < Power)) return;
+            if (!(r + particle.Radius < Diametr)) return;
 
             var r2 = Math.Max(100, gX * gX + gY * gY);
 
-            particle.SpeedX += gX * Power / r2;
-            particle.SpeedY += gY * Power / r2;
+            particle.SpeedX += gX * Diametr / r2;
+            particle.SpeedY += gY * Diametr / r2;
         }
 
         public override void Render(Graphics graphics)
         {
             graphics.DrawEllipse(
                 new Pen(mColor),
-                X - Power / 2f,
-                Y - Power / 2f,
-                Power,
-                Power
+                X - Diametr / 2f,
+                Y - Diametr / 2f,
+                Diametr,
+                Diametr
             );
         }
     }

@@ -9,7 +9,7 @@ namespace ParticleSystem.Emitters
     public class PlanetEmitter : Emitter
     {
         public int ParticlesToCreate;
-        public float OrbitDiametr;
+        public float OrbitRadius;
         public Random Rand = new();
         public float SpeedX;
         public float SpeedY;
@@ -52,6 +52,7 @@ namespace ParticleSystem.Emitters
             while (ParticlesToCreate >= 1)
             {
                 var rnd = new Random();
+
                 var randomColor = Color.FromArgb(rnd.Next(256), 
                     rnd.Next(256), rnd.Next(256));
                 ParticlesToCreate -= 1;
@@ -63,13 +64,13 @@ namespace ParticleSystem.Emitters
                     mColor = randomColor,
                     X = this.X,
                     Y = this.Y,
-                    Diametr = OrbitDiametr * 2,
+                    Diametr = OrbitRadius * 2,
                 };
                 ResetParticle(particle);
-                particle.Y -= OrbitDiametr;
+                particle.Y -= OrbitRadius;
                 Particles.Add(particle);
                 ImpactPoints.Add(orbit);
-                OrbitDiametr += Rand.Next(7, 10);
+                OrbitRadius += Rand.Next(7, 10);
             }
         }
     }

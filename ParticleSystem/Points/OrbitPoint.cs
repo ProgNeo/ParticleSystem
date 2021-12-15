@@ -7,7 +7,8 @@ namespace ParticleSystem.Points
     public class OrbitPoint : ImpactPoint
     {
         public float Diametr;
-        public Color mColor;
+        // ReSharper disable once InconsistentNaming
+        public Color mColor = Color.White;
         public override void ImpactParticle(Particle particle)
         {
             var gX = X - particle.X;
