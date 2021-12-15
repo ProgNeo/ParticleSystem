@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using SunEmitter = ParticleSystem.Emitters.SunEmitter;
 
 namespace ParticleSystem
 {
@@ -18,19 +17,19 @@ namespace ParticleSystem
             InitializeComponent();
             picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
 
-            var particlesToCreate = _random.Next(0, 5);
+            var particlesToCreate = _random.Next(2, 8);
             var orbitDiametr = _random.Next(150, 170);
             
             _emitter = new SunEmitter()
             {
                 Direction = 0,
                 Spreading = 1,
-                RadiusMin = 2,
-                RadiusMax = 4,
+                RadiusMin = 5,
+                RadiusMax = 10,
                 GravitationX = 0,
                 GravitationY = 0,
                 SpeedMin = 1,
-                SpeedMax = 1, 
+                SpeedMax = 1,
                 ParticlesToCreate = particlesToCreate,
                 OrbitDiametr = orbitDiametr,
                 X = picDisplay.Width / 2f,
@@ -42,8 +41,8 @@ namespace ParticleSystem
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            var g = Graphics.FromImage(picDisplay.Image);
-            g.Clear(Color.Black);
+            var graphics = Graphics.FromImage(picDisplay.Image);
+            graphics.Clear(Color.Black);
 
             foreach (var emitter in _emitters)
             {
@@ -52,11 +51,11 @@ namespace ParticleSystem
                     foreach (var planetEmitter in sunEmitter.Emmiters)
                     {
                         planetEmitter.UpdateState();
-                        planetEmitter.Render(g);
+                        planetEmitter.Render(graphics);
                     }
                 }
                 emitter.UpdateState();
-                emitter.Render(g);
+                emitter.Render(graphics);
             }
 
             picDisplay.Invalidate();

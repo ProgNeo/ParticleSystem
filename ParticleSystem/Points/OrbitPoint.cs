@@ -7,13 +7,14 @@ namespace ParticleSystem.Points
     public class OrbitPoint : ImpactPoint
     {
         public float Diametr;
+        public Color mColor;
         public override void ImpactParticle(Particle particle)
         {
             var gX = X - particle.X;
             var gY = Y - particle.Y;
             var r = Math.Sqrt(gX * gX + gY * gY);
 
-            if (!(r + particle.Radius < Diametr)) return;
+            if (!(r + particle.Radius < Diametr / 2 * 3)) return;
 
             var r2 = Math.Max(100, gX * gX + gY * gY);
 
@@ -24,7 +25,7 @@ namespace ParticleSystem.Points
         public override void Render(Graphics graphics)
         {
             graphics.DrawEllipse(
-                new Pen(Color.White),
+                new Pen(mColor),
                 X - Diametr / 2f,
                 Y - Diametr / 2f,
                 Diametr,

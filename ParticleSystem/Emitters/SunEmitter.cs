@@ -46,20 +46,27 @@ namespace ParticleSystem.Emitters
                 Particles[i].X += Particles[i].SpeedX;
                 Particles[i].Y += Particles[i].SpeedY;
 
-                foreach (var point in Emmiters.Cast<PlanetEmitter>()
-                             .SelectMany(emiiter => emiiter.ImpactPoints))
-                {
-                    point.X = Particles[i].X;
-                    point.Y = Particles[i].Y;
-                }
+                if (Emmiters[i] is not PlanetEmitter planetEmmiter) continue;
+                planetEmmiter.SpeedX = Particles[i].SpeedX;
+                planetEmmiter.SpeedY = Particles[i].SpeedY;
+
+                planetEmmiter.X += planetEmmiter.SpeedX;
+                planetEmmiter.Y += planetEmmiter.SpeedY;
             }
             
             while (ParticlesToCreate >= 1)
             {
+                var rnd = new Random();
+                var randomColor = Color.FromArgb(rnd.Next(256),
+                    rnd.Next(256), rnd.Next(256));
+                ColorFrom = randomColor;
+                ColorTo = randomColor;
+
                 ParticlesToCreate -= 1;
                 var particle = CreateParticle();
                 var orbit = new OrbitPoint()
                 {
+                    mColor = randomColor,
                     X = this.X,
                     Y = this.Y,
                     Diametr = OrbitDiametr * 2,
@@ -90,7 +97,7 @@ namespace ParticleSystem.Emitters
                 particle.Y -= OrbitDiametr;
                 Particles.Add(particle);
                 ImpactPoints.Add(orbit);
-                OrbitDiametr += Rand.Next(90, 110);
+                OrbitDiametr += Rand.Next(120, 150);
             }
         }
     }

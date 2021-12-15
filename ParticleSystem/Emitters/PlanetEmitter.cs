@@ -11,6 +11,8 @@ namespace ParticleSystem.Emitters
         public int ParticlesToCreate;
         public float OrbitDiametr;
         public Random Rand = new();
+        public float SpeedX;
+        public float SpeedY;
 
         public override void ResetParticle(Particle particle)
         {
@@ -41,18 +43,24 @@ namespace ParticleSystem.Emitters
             {
                 ImpactPoints[i].ImpactParticle(Particles[i]);
 
-                Particles[i].X += Particles[i].SpeedX;
-                Particles[i].Y += Particles[i].SpeedY;
+                Particles[i].X += Particles[i].SpeedX + this.SpeedX;
+                Particles[i].Y += Particles[i].SpeedY + this.SpeedY;
                 ImpactPoints[i].X = this.X;
                 ImpactPoints[i].Y = this.Y;
             }
 
             while (ParticlesToCreate >= 1)
             {
+                var rnd = new Random();
+                var randomColor = Color.FromArgb(rnd.Next(256), 
+                    rnd.Next(256), rnd.Next(256));
                 ParticlesToCreate -= 1;
+                ColorFrom = randomColor;
+                ColorTo = randomColor;
                 var particle = CreateParticle();
                 var orbit = new OrbitPoint()
                 {
+                    mColor = randomColor,
                     X = this.X,
                     Y = this.Y,
                     Diametr = OrbitDiametr * 2,
