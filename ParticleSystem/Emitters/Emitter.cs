@@ -103,16 +103,19 @@ namespace ParticleSystem.Emitters
             }
         }
 
-        public void Render(Graphics g)
+        public void RenderParticles(Graphics graphics)
         {
             foreach (var particle in Particles)
             {
-                particle.Draw(g);
+                particle.Draw(graphics);
             }
+        }
 
+        public void RenderImpactPoints(Graphics graphics)
+        {
             foreach (var point in ImpactPoints)
             {
-                point.Render(g);
+                point.Render(graphics);
             }
         }
     }

@@ -66,6 +66,8 @@ namespace ParticleSystem.Emitters
                         GravitationY = 0,
                         Direction = 0,
                         Spreading = 10,
+                        RadiusMin = 2,
+                        RadiusMax = 5,
                         SpeedMin = (int)Math.Sqrt(OrbitRadius * 2),
                         SpeedMax = (int)Math.Sqrt(OrbitRadius * 2),
                         LifeMin = 100,

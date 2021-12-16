@@ -12,6 +12,7 @@ namespace ParticleSystem
         private readonly List<Emitter> _emitters = new();
         private readonly Emitter _emitter;
         private readonly Random _random = new();
+        private bool _isOrbitsActive = true;
         public MainForm()
         {
             InitializeComponent();
@@ -51,13 +52,28 @@ namespace ParticleSystem
                     foreach (var planetEmitter in sunEmitter.Emmiters)
                     {
                         planetEmitter.UpdateState();
-                        planetEmitter.Render(graphics);
+                        planetEmitter.RenderParticles(graphics);
+                        if (_isOrbitsActive == true)
+                        {
+                            planetEmitter.RenderImpactPoints(graphics);
+                        }
                     }
+
                     sunEmitter.RingEmitter?.UpdateState();
-                    sunEmitter.RingEmitter?.Render(graphics);
+                    sunEmitter.RingEmitter?.RenderParticles(graphics);
+                    if (_isOrbitsActive == true)
+                    {
+                        sunEmitter.RingEmitter?.RenderImpactPoints(graphics);
+                    }
                 }
+
                 emitter.UpdateState();
-                emitter.Render(graphics);
+                emitter.RenderParticles(graphics);
+                if (_isOrbitsActive == true)
+                {
+                    emitter.RenderImpactPoints(graphics);
+                }
+
                 graphics.FillEllipse(
                     new SolidBrush(Color.Orange), 
                     picDisplay.Width / 2 - 75,
@@ -74,6 +90,11 @@ namespace ParticleSystem
         {
             _emitter.MousePositionX = e.X;
             _emitter.MousePositionY = e.Y;
+        }
+
+        private void changeOrbitsVision_Click(object sender, EventArgs e)
+        {
+            _isOrbitsActive = !_isOrbitsActive;
         }
     }
 }
