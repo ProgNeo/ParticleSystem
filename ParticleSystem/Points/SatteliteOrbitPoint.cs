@@ -4,11 +4,17 @@ using ParticleSystem.Particles;
 
 namespace ParticleSystem.Points
 {
-    public class OrbitPoint : ImpactPoint
+    public class SatteliteOrbitPoint : ImpactPoint
     {
         public float Diametr;
         // ReSharper disable once InconsistentNaming
         public Color Color = Color.White;
+        public Planet Planet;
+
+        public SatteliteOrbitPoint(Planet planet)
+        {
+            Planet = planet;
+        }
         
         public override void ImpactParticle(Particle particle)
         {
@@ -16,12 +22,15 @@ namespace ParticleSystem.Points
             var gY = Y - particle.Y;
             var r = Math.Sqrt(gX * gX + gY * gY);
             
-            if (r > Diametr / 2 * 1.2f || r < Diametr / 2 * 0.8f) return;
+            if (r > (Diametr + 5) / 2 || r < (Diametr - 5) / 2) return;
 
             var r2 = Math.Max(100, gX * gX + gY * gY);
 
             particle.SpeedX += gX / r2;
             particle.SpeedY += gY / r2;
+
+            particle.X += Planet.SpeedX;
+            particle.Y += Planet.SpeedY;
         }
 
         public override void Render(Graphics graphics)

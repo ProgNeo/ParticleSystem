@@ -7,8 +7,8 @@ namespace ParticleSystem.Particles
 {
     public class Planet : Particle
     {
-        public List<OrbitPoint> SattelitesOrbits = new();
-
+        public List<SatteliteOrbitPoint> SattelitesOrbits = new();
+        
         public void ChangeOrbitsPositions()
         {
             foreach (var orbit in SattelitesOrbits)

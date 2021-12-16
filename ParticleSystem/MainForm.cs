@@ -22,7 +22,7 @@ namespace ParticleSystem
             _sunEmitter = new SunEmitter()
             {
                 Direction = 0,
-                Spreading = 1,
+                Spreading = 0,
                 RadiusMin = 5,
                 RadiusMax = 10,
                 GravitationX = 0,
@@ -43,13 +43,11 @@ namespace ParticleSystem
             var graphics = Graphics.FromImage(picDisplay.Image);
             graphics.Clear(Color.Black);
 
+            _sunEmitter.UpdateState();
+            _sunEmitter.RenderParticles(graphics);
             if (_isOrbitsActive)
             {
-                RenderWithImpactPoints(graphics);
-            }
-            else
-            {
-                RenderOnlyParticles(graphics);
+                _sunEmitter.RenderImpactPoints(graphics);
             }
 
             //RenderSun(graphics);
@@ -84,19 +82,6 @@ namespace ParticleSystem
                 120,
                 120
             );
-        }
-
-        private void RenderWithImpactPoints(Graphics graphics)
-        {
-            _sunEmitter.UpdateState();
-            _sunEmitter.RenderParticles(graphics);
-            _sunEmitter.RenderImpactPoints(graphics);
-        }
-
-        private void RenderOnlyParticles(Graphics graphics)
-        {
-            _sunEmitter.UpdateState();
-            _sunEmitter.RenderParticles(graphics);
         }
     }
 }

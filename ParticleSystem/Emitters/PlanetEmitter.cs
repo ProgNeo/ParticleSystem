@@ -59,7 +59,7 @@ namespace ParticleSystem.Emitters
                 ColorFrom = randomColor;
                 ColorTo = randomColor;
                 var particle = CreateParticle();
-                var orbit = new OrbitPoint()
+                var orbit = new PlanetOrbitPoint()
                 {
                     Color = randomColor,
                     X = this.X,

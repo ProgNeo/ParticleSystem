@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using ParticleSystem.Particles;
 using ParticleSystem.Points;
@@ -44,9 +43,10 @@ namespace ParticleSystem.Emitters
                 {
                     point.ImpactParticle(particle);
                 }
-                
+
                 particle.X += particle.SpeedX;
                 particle.Y += particle.SpeedY;
+
                 
                 if (particle is Planet planet)
                 {
@@ -69,7 +69,7 @@ namespace ParticleSystem.Emitters
                     Radius = Random.Next(5, 10)
                 };
 
-                var orbit = new OrbitPoint
+                var orbit = new PlanetOrbitPoint
                 {
                     Color = randomColor,
                     X = this.X,
@@ -80,7 +80,7 @@ namespace ParticleSystem.Emitters
                 ResetParticle(particle);
                 particle.Y -= OrbitRadius;
 
-                //CreateSattelitesOfPlanet(particle);
+                CreateSattelitesOfPlanet(particle);
                 Particles.Add(particle);
                 ImpactPoints.Add(orbit);
 
@@ -92,24 +92,24 @@ namespace ParticleSystem.Emitters
         //Создаются спутники планеты
         private void CreateSattelitesOfPlanet(Planet planet)
         {
-            var particlesToCreate = Random.Next(2, 5);
+            var sattelitesToCreate = Random.Next(2, 5);
             var orbitRadius = Random.Next(25, 30);
 
-            while (particlesToCreate > 0)
+            while (sattelitesToCreate > 0)
             {
                 var randomColor = Color.FromArgb(Random.Next(256),
                     Random.Next(256), Random.Next(256));
-                particlesToCreate -= 1;
+                sattelitesToCreate -= 1;
 
-                var satellite = new Particle
+                var satellite = new Sattelite
                 {
-                    Color = planet.Color,
+                    Color = randomColor,
                     Radius = Random.Next(3, 5)
                 };
 
-                var orbit = new OrbitPoint
+                var orbit = new SatteliteOrbitPoint(planet)
                 {
-                    Color = planet.Color,
+                    Color = randomColor,
                     X = planet.X,
                     Y = planet.Y,
                     Diametr = orbitRadius * 2
@@ -124,7 +124,7 @@ namespace ParticleSystem.Emitters
                 planet.SattelitesOrbits.Add(orbit);
                 ImpactPoints.Add(orbit);
 
-                orbitRadius += Random.Next(7, 10);
+                orbitRadius += Random.Next(12, 15);
             }
         }
     }
