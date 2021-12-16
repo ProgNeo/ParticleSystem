@@ -13,18 +13,18 @@ namespace ParticleSystem.Particles
         public float SpeedY; 
         public float Life;
 
-        public static Random Rand = new Random();
-        public Color Color;
+        public static Random Random = new Random();
+        public Color Color = Color.White;
 
         public Particle()
         {
-            var direction = (double)Rand.Next(360);
-            var speed = 1 + Rand.Next(10);
+            var direction = (double)Random.Next(360);
+            var speed = 1 + Random.Next(10);
                 
             SpeedX = (float)(Math.Cos(direction / 180 * Math.PI) * speed);
             SpeedY = -(float)(Math.Sin(direction / 180 * Math.PI) * speed);
 
-            Life = Rand.Next(60, 160);
+            Life = Random.Next(60, 160);
         }
 
         public virtual void Draw(Graphics g)

@@ -9,27 +9,22 @@ namespace ParticleSystem.Emitters
     {
         public int PlanetsToCreate;
         public float OrbitRadius;
-        
-        public bool IsRingExist = false;
+
+        public Point RingPoint = new(0, 0);
+        public int RingSpeed;
 
         public Random Random = new();
 
         public override void ResetParticle(Particle particle)
         {
-            particle.Life = 100;
+            particle.Life = Random.Next(LifeMin, LifeMax);
 
             particle.X = this.X;
             particle.Y = this.Y;
 
-            var direction = Direction + (double)Particle.Rand.Next(Spreading) - Spreading / 2f;
-
-            if (particle is ParticleColorful colorful)
-            {
-                colorful.FromColor = ColorFrom;
-                colorful.ToColor = ColorTo;
-            }
-
-            var speed = Particle.Rand.Next(SpeedMin, SpeedMax);
+            var direction = Direction + (double)Particle.Random.Next(Spreading) - Spreading / 2f;
+            
+            var speed = particle is Asteroid ? RingSpeed : SpeedMin;
 
             particle.SpeedX = (float)(Math.Cos(direction / 180 * Math.PI) * speed);
             particle.SpeedY = -(float)(Math.Sin(direction / 180 * Math.PI) * speed);
@@ -37,6 +32,8 @@ namespace ParticleSystem.Emitters
 
         public override void UpdateState()
         {
+            var particlesToCreate = ParticlesPerTick;
+
             foreach (var particle in Particles)
             {
                 foreach (var point in ImpactPoints)
@@ -47,11 +44,26 @@ namespace ParticleSystem.Emitters
                 particle.X += particle.SpeedX;
                 particle.Y += particle.SpeedY;
 
-                
+
                 if (particle is Planet planet)
                 {
                     planet.ChangeOrbitsPositions();
                 }
+            }
+
+            while (Particles.Count < 300 && particlesToCreate > 0)
+            {
+                particlesToCreate -= 1;
+                var particle = new Asteroid
+                {
+                    FromColor = Color.White,
+                    ToColor = Color.Gray,
+                    Radius = Random.Next(5, 9)
+                };
+                ResetParticle(particle);
+                particle.X = RingPoint.X;
+                particle.Y = RingPoint.Y;
+                Particles.Add(particle);
             }
         }
 
@@ -63,12 +75,6 @@ namespace ParticleSystem.Emitters
                 var randomColor = Color.FromArgb(Random.Next(256),
                     Random.Next(256), Random.Next(256));
 
-                var particle = new Planet
-                {
-                    Color = randomColor,
-                    Radius = Random.Next(5, 10)
-                };
-
                 var orbit = new PlanetOrbitPoint
                 {
                     Color = randomColor,
@@ -77,13 +83,29 @@ namespace ParticleSystem.Emitters
                     Diametr = OrbitRadius * 2,
                 };
 
-                ResetParticle(particle);
-                particle.Y -= OrbitRadius;
+                if (RingPoint.X == 0 && Random.Next(10) % 4 == 2)
+                {
+                    RingPoint = new Point(this.X, (int) (this.Y - OrbitRadius));
+                    RingSpeed = (int) Math.Sqrt(OrbitRadius * 2);
+                    orbit.Color = Color.White;
+                    orbit.Range = 70;
+                }
+                else
+                {
+                    var particle = new Planet
+                    {
+                        Color = randomColor,
+                        Radius = Random.Next(9, 16)
+                    };
 
-                CreateSattelitesOfPlanet(particle);
-                Particles.Add(particle);
+                    ResetParticle(particle);
+                    particle.Y -= OrbitRadius;
+
+                    CreateSattelitesOfPlanet(particle);
+                    Particles.Add(particle);
+                }
+
                 ImpactPoints.Add(orbit);
-
                 PlanetsToCreate -= 1;
                 OrbitRadius += Random.Next(120, 150);
             }

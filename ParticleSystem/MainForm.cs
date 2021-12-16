@@ -7,13 +7,19 @@ namespace ParticleSystem
 {
     public partial class MainForm : Form
     {
-        private readonly SunEmitter _sunEmitter;
-        private readonly Random _random = new();
+        private SunEmitter _sunEmitter = new();
         private bool _isOrbitsActive = true;
+
+        private readonly Random _random = new();
 
         public MainForm()
         {
             InitializeComponent();
+            GenerateSytem();
+        }
+
+        private void GenerateSytem()
+        {
             picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
 
             var planetsToCreate = _random.Next(2, 6);
@@ -29,10 +35,13 @@ namespace ParticleSystem
                 GravitationY = 0,
                 SpeedMin = 1,
                 SpeedMax = 1,
+                LifeMin = 10,
+                LifeMax = 100,
                 PlanetsToCreate = planetsToCreate,
+                ParticlesPerTick = 1,
                 OrbitRadius = orbitRadius,
-                X = picDisplay.Width / 2f,
-                Y = picDisplay.Height / 2f
+                X = picDisplay.Width / 2,
+                Y = picDisplay.Height / 2
             };
 
             _sunEmitter.CreatePlanets();
@@ -50,7 +59,7 @@ namespace ParticleSystem
                 _sunEmitter.RenderImpactPoints(graphics);
             }
 
-            //RenderSun(graphics);
+            RenderSun(graphics);
             picDisplay.Invalidate();
         }
 

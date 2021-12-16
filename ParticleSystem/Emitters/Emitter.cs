@@ -14,8 +14,8 @@ namespace ParticleSystem.Emitters
         public float GravitationX = 0;
         public float GravitationY = 1;
 
-        public float X;
-        public float Y;
+        public int X;
+        public int Y;
         public int Direction = 0;
         public int Spreading = 360;
         public int SpeedMin = 1;
@@ -31,12 +31,12 @@ namespace ParticleSystem.Emitters
 
         public virtual void ResetParticle(Particle particle)
         {
-            particle.Life = Particle.Rand.Next(LifeMin, LifeMax);
+            particle.Life = Particle.Random.Next(LifeMin, LifeMax);
 
             particle.X = X;
             particle.Y = Y;
 
-            var direction = Direction + (double)Particle.Rand.Next(Spreading) - Spreading / 2f;
+            var direction = Direction + (double)Particle.Random.Next(Spreading) - Spreading / 2f;
 
             if (particle is ParticleColorful colorful)
             {
@@ -44,12 +44,12 @@ namespace ParticleSystem.Emitters
                 colorful.ToColor = ColorTo;
             }
 
-            var speed = Particle.Rand.Next(SpeedMin, SpeedMax);
+            var speed = Particle.Random.Next(SpeedMin, SpeedMax);
 
             particle.SpeedX = (float)(Math.Cos(direction / 180 * Math.PI) * speed);
             particle.SpeedY = -(float)(Math.Sin(direction / 180 * Math.PI) * speed);
 
-            particle.Radius = Particle.Rand.Next(RadiusMin, RadiusMax);
+            particle.Radius = Particle.Random.Next(RadiusMin, RadiusMax);
         }
 
         public virtual Particle CreateParticle()

@@ -7,6 +7,7 @@ namespace ParticleSystem.Points
     public class PlanetOrbitPoint : ImpactPoint
     {
         public float Diametr;
+        public float Range = 10;
         // ReSharper disable once InconsistentNaming
         public Color Color = Color.White;
         
@@ -16,19 +17,24 @@ namespace ParticleSystem.Points
             var gY = Y - particle.Y;
             var r = Math.Sqrt(gX * gX + gY * gY);
             
-            if (r > (Diametr + 10) / 2 || r < (Diametr - 10) / 2) return;
+            if (r > (Diametr + Range) / 2 || r < (Diametr - Range) / 2) return;
 
             var r2 = Math.Max(100, gX * gX + gY * gY);
             
-            if (particle is Sattelite)
+            switch (particle)
             {
-                particle.SpeedX += gX / r2 / 3;
-                particle.SpeedY += gY / r2 / 3;
-            }
-            else
-            {
-                particle.SpeedX += gX / r2;
-                particle.SpeedY += gY / r2;
+                case Sattelite:
+                    particle.SpeedX += gX / r2 / 3;
+                    particle.SpeedY += gY / r2 / 3;
+                    break;
+                case Asteroid:
+                    particle.SpeedX += gX * Diametr / r2;
+                    particle.SpeedY += gY * Diametr / r2;
+                    break;
+                default:
+                    particle.SpeedX += gX / r2;
+                    particle.SpeedY += gY / r2;
+                    break;
             }
         }
 
@@ -40,6 +46,20 @@ namespace ParticleSystem.Points
                 Y - Diametr / 2f,
                 Diametr,
                 Diametr
+            );
+            graphics.DrawEllipse(
+                new Pen(Color),
+                X - (Diametr + Range) / 2f,
+                Y - (Diametr + Range) / 2f,
+                (Diametr + Range),
+                (Diametr + Range)
+            );
+            graphics.DrawEllipse(
+                new Pen(Color),
+                X - (Diametr - Range) / 2f,
+                Y - (Diametr - Range) / 2f,
+                (Diametr - Range),
+                (Diametr - Range)
             );
         }
     }

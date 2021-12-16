@@ -21,7 +21,7 @@ namespace ParticleSystem.Emitters
             particle.X = X;
             particle.Y = Y;
 
-            var direction = Direction + (double)Particle.Rand.Next(Spreading) - Spreading / 2f;
+            var direction = Direction + (double)Particle.Random.Next(Spreading) - Spreading / 2f;
 
             if (particle is ParticleColorful colorful)
             {
@@ -29,12 +29,12 @@ namespace ParticleSystem.Emitters
                 colorful.ToColor = ColorTo;
             }
 
-            var speed = Particle.Rand.Next(SpeedMin, SpeedMax);
+            var speed = Particle.Random.Next(SpeedMin, SpeedMax);
 
             particle.SpeedX = (float)(Math.Cos(direction / 180 * Math.PI) * speed);
             particle.SpeedY = -(float)(Math.Sin(direction / 180 * Math.PI) * speed);
 
-            particle.Radius = Particle.Rand.Next(RadiusMin, RadiusMax);
+            particle.Radius = Particle.Random.Next(RadiusMin, RadiusMax);
         }
 
         public override void UpdateState()
