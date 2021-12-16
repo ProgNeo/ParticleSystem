@@ -73,16 +73,9 @@ namespace ParticleSystem
                 {
                     emitter.RenderImpactPoints(graphics);
                 }
-
-                graphics.FillEllipse(
-                    new SolidBrush(Color.Orange), 
-                    picDisplay.Width / 2 - 75,
-                    picDisplay.Height / 2 - 75,
-                    150, 
-                    150
-                    );
             }
 
+            RenderSun(graphics);
             picDisplay.Invalidate();
         }
 
@@ -95,6 +88,31 @@ namespace ParticleSystem
         private void changeOrbitsVision_Click(object sender, EventArgs e)
         {
             _isOrbitsActive = !_isOrbitsActive;
+        }
+
+        private void RenderSun(Graphics graphics)
+        {
+            graphics.FillEllipse(
+                new SolidBrush(Color.FromArgb(100, 252, 186, 32)),
+                picDisplay.Width / 2 - 80,
+                picDisplay.Height / 2 - 80,
+                160,
+                160
+            );            
+            graphics.FillEllipse(
+                new SolidBrush(Color.FromArgb(155, 252, 186, 32)),
+                picDisplay.Width / 2 - 70,
+                picDisplay.Height / 2 - 70,
+                140,
+                140
+            );
+            graphics.FillEllipse(
+                new SolidBrush(Color.FromArgb(255, 252, 186, 32)),
+                picDisplay.Width / 2 - 60,
+                picDisplay.Height / 2 - 60,
+                120,
+                120
+            );
         }
     }
 }
