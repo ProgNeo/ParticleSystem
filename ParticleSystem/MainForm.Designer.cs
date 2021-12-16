@@ -40,6 +40,10 @@
             // 
             // picDisplay
             // 
+            this.picDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.picDisplay.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.picDisplay.Location = new System.Drawing.Point(12, 27);
             this.picDisplay.Name = "picDisplay";
             this.picDisplay.Size = new System.Drawing.Size(1880, 1002);

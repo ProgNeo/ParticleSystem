@@ -16,7 +16,7 @@ namespace ParticleSystem
             InitializeComponent();
             picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
 
-            var particlesToCreate = _random.Next(2, 8);
+            var planetsToCreate = _random.Next(2, 6);
             var orbitRadius = _random.Next(150, 170);
 
             _sunEmitter = new SunEmitter()
@@ -29,11 +29,13 @@ namespace ParticleSystem
                 GravitationY = 0,
                 SpeedMin = 1,
                 SpeedMax = 1,
-                ParticlesToCreate = particlesToCreate,
+                PlanetsToCreate = planetsToCreate,
                 OrbitRadius = orbitRadius,
                 X = picDisplay.Width / 2f,
                 Y = picDisplay.Height / 2f
             };
+
+            _sunEmitter.CreatePlanets();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -50,7 +52,7 @@ namespace ParticleSystem
                 RenderOnlyParticles(graphics);
             }
 
-            RenderSun(graphics);
+            //RenderSun(graphics);
             picDisplay.Invalidate();
         }
 
@@ -86,17 +88,6 @@ namespace ParticleSystem
 
         private void RenderWithImpactPoints(Graphics graphics)
         {
-            foreach (var planetEmitter in _sunEmitter.Emmiters)
-            {
-                planetEmitter.UpdateState();
-                planetEmitter.RenderParticles(graphics);
-                planetEmitter.RenderImpactPoints(graphics);
-            }
-
-            _sunEmitter.RingEmitter?.UpdateState();
-            _sunEmitter.RingEmitter?.RenderParticles(graphics);
-            _sunEmitter.RingEmitter?.RenderImpactPoints(graphics);
-
             _sunEmitter.UpdateState();
             _sunEmitter.RenderParticles(graphics);
             _sunEmitter.RenderImpactPoints(graphics);
@@ -104,15 +95,6 @@ namespace ParticleSystem
 
         private void RenderOnlyParticles(Graphics graphics)
         {
-            foreach (var planetEmitter in _sunEmitter.Emmiters)
-            {
-                planetEmitter.UpdateState();
-                planetEmitter.RenderParticles(graphics);
-            }
-
-            _sunEmitter.RingEmitter?.UpdateState();
-            _sunEmitter.RingEmitter?.RenderParticles(graphics);
-
             _sunEmitter.UpdateState();
             _sunEmitter.RenderParticles(graphics);
         }

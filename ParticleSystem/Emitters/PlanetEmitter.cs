@@ -61,7 +61,7 @@ namespace ParticleSystem.Emitters
                 var particle = CreateParticle();
                 var orbit = new OrbitPoint()
                 {
-                    mColor = randomColor,
+                    Color = randomColor,
                     X = this.X,
                     Y = this.Y,
                     Diametr = OrbitRadius * 2,

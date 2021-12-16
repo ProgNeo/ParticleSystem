@@ -8,14 +8,15 @@ namespace ParticleSystem.Points
     {
         public float Diametr;
         // ReSharper disable once InconsistentNaming
-        public Color mColor = Color.White;
+        public Color Color = Color.White;
+        
         public override void ImpactParticle(Particle particle)
         {
             var gX = X - particle.X;
             var gY = Y - particle.Y;
             var r = Math.Sqrt(gX * gX + gY * gY);
-
-            if (!(r + particle.Radius < Diametr / 2 * 3)) return;
+            
+            if (r > Diametr / 2 * 1.2f || r < Diametr / 2 * 0.8f) return;
 
             var r2 = Math.Max(100, gX * gX + gY * gY);
 
@@ -26,7 +27,7 @@ namespace ParticleSystem.Points
         public override void Render(Graphics graphics)
         {
             graphics.DrawEllipse(
-                new Pen(mColor),
+                new Pen(Color),
                 X - Diametr / 2f,
                 Y - Diametr / 2f,
                 Diametr,

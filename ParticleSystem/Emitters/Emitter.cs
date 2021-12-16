@@ -10,10 +10,7 @@ namespace ParticleSystem.Emitters
     {
         public List<Particle> Particles = new();
         public List<ImpactPoint> ImpactPoints = new();
-
-        public int MousePositionX;
-        public int MousePositionY;
-
+        
         public float GravitationX = 0;
         public float GravitationY = 1;
 

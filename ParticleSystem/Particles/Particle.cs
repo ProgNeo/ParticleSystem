@@ -14,7 +14,8 @@ namespace ParticleSystem.Particles
         public float Life;
 
         public static Random Rand = new Random();
-        
+        public Color Color;
+
         public Particle()
         {
             var direction = (double)Rand.Next(360);
@@ -31,7 +32,7 @@ namespace ParticleSystem.Particles
             var k = Math.Min(1f, Life / 100);
             var alpha = (int)(k * 255);
             
-            var color = Color.FromArgb(alpha, Color.Black);
+            var color = Color.FromArgb(alpha, Color);
             var b = new SolidBrush(color);
 
             g.FillEllipse(b, X - Radius, Y - Radius, Radius * 2, Radius * 2);

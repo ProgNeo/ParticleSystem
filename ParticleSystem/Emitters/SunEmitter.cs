@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using ParticleSystem.Particles;
 using ParticleSystem.Points;
 
@@ -9,19 +8,19 @@ namespace ParticleSystem.Emitters
 {
     public class SunEmitter : Emitter
     {
-        public List<Emitter> Emmiters = new List<Emitter>();
-        public Emitter? RingEmitter = null;
-        public int ParticlesToCreate;
+        public int PlanetsToCreate;
         public float OrbitRadius;
-        public Random Rand = new();
+        
         public bool IsRingExist = false;
+
+        public Random Random = new();
 
         public override void ResetParticle(Particle particle)
         {
             particle.Life = 100;
 
-            particle.X = X;
-            particle.Y = Y;
+            particle.X = this.X;
+            particle.Y = this.Y;
 
             var direction = Direction + (double)Particle.Rand.Next(Spreading) - Spreading / 2f;
 
@@ -35,103 +34,97 @@ namespace ParticleSystem.Emitters
 
             particle.SpeedX = (float)(Math.Cos(direction / 180 * Math.PI) * speed);
             particle.SpeedY = -(float)(Math.Sin(direction / 180 * Math.PI) * speed);
-
-            particle.Radius = Particle.Rand.Next(RadiusMin, RadiusMax);
         }
 
         public override void UpdateState()
         {
-            for (var i = 0; i < Particles.Count; i++)
+            foreach (var particle in Particles)
             {
-                ImpactPoints[i].ImpactParticle(Particles[i]);
-
-                Particles[i].X += Particles[i].SpeedX;
-                Particles[i].Y += Particles[i].SpeedY;
-
-                if (Emmiters[i] is not PlanetEmitter planetEmmiter) continue;
-                planetEmmiter.SpeedX = Particles[i].SpeedX;
-                planetEmmiter.SpeedY = Particles[i].SpeedY;
-
-                planetEmmiter.X += planetEmmiter.SpeedX;
-                planetEmmiter.Y += planetEmmiter.SpeedY;
+                foreach (var point in ImpactPoints)
+                {
+                    point.ImpactParticle(particle);
+                }
+                
+                particle.X += particle.SpeedX;
+                particle.Y += particle.SpeedY;
+                
+                if (particle is Planet planet)
+                {
+                    planet.ChangeOrbitsPositions();
+                }
             }
-            
-            while (ParticlesToCreate >= 1)
+        }
+
+        //Создаются планеты и их орбиты
+        public void CreatePlanets()
+        {
+            while (PlanetsToCreate > 0)
             {
-                if (IsRingExist == false && Rand.Next(10) % 5 == 2)
+                var randomColor = Color.FromArgb(Random.Next(256),
+                    Random.Next(256), Random.Next(256));
+
+                var particle = new Planet
                 {
-                    IsRingExist = true;
-                    var emitter = new Emitter
-                    {
-                        GravitationY = 0,
-                        Direction = 0,
-                        Spreading = 10,
-                        RadiusMin = 2,
-                        RadiusMax = 5,
-                        SpeedMin = (int)Math.Sqrt(OrbitRadius * 2),
-                        SpeedMax = (int)Math.Sqrt(OrbitRadius * 2),
-                        LifeMin = 100,
-                        LifeMax = 300,
-                        ColorFrom = Color.White,
-                        ColorTo = Color.FromArgb(0, Color.Gray),
-                        ParticlesPerTick = 3,
-                        X = this.X, 
-                        Y = this.Y - OrbitRadius
-                    };
-                    emitter.ImpactPoints.Add(new RingPoint
-                    {
-                        Diametr = OrbitRadius * 2,
-                        X = this.X,
-                        Y = this.Y,
-                    });
-                    RingEmitter = emitter;
-                }
+                    Color = randomColor,
+                    Radius = Random.Next(5, 10)
+                };
 
-                else
+                var orbit = new OrbitPoint
                 {
-                    var randomColor = Color.FromArgb(Rand.Next(256),
-                        Rand.Next(256), Rand.Next(256));
-                    ColorFrom = randomColor;
-                    ColorTo = randomColor;
+                    Color = randomColor,
+                    X = this.X,
+                    Y = this.Y,
+                    Diametr = OrbitRadius * 2,
+                };
 
-                    var particle = CreateParticle();
-                    var orbit = new OrbitPoint()
-                    {
-                        mColor = randomColor,
-                        X = this.X,
-                        Y = this.Y,
-                        Diametr = OrbitRadius * 2,
-                    };
+                ResetParticle(particle);
+                particle.Y -= OrbitRadius;
 
-                    var particlesToCreate = Rand.Next(0, 5);
-                    var orbitDiametr = Rand.Next(25, 30);
+                //CreateSattelitesOfPlanet(particle);
+                Particles.Add(particle);
+                ImpactPoints.Add(orbit);
 
-                    var emitter = new PlanetEmitter()
-                    {
-                        Direction = 0,
-                        Spreading = 1,
-                        RadiusMin = 2,
-                        RadiusMax = 4,
-                        GravitationX = 0,
-                        GravitationY = 0,
-                        SpeedMin = 1,
-                        SpeedMax = 1,
-                        ParticlesToCreate = particlesToCreate,
-                        OrbitRadius = orbitDiametr,
-                        X = this.X,
-                        Y = this.Y - OrbitRadius
-                    };
+                PlanetsToCreate -= 1;
+                OrbitRadius += Random.Next(120, 150);
+            }
+        }
 
-                    Emmiters.Add(emitter);
+        //Создаются спутники планеты
+        private void CreateSattelitesOfPlanet(Planet planet)
+        {
+            var particlesToCreate = Random.Next(2, 5);
+            var orbitRadius = Random.Next(25, 30);
 
-                    ResetParticle(particle);
-                    particle.Y -= OrbitRadius;
-                    Particles.Add(particle);
-                    ImpactPoints.Add(orbit);
-                }
+            while (particlesToCreate > 0)
+            {
+                var randomColor = Color.FromArgb(Random.Next(256),
+                    Random.Next(256), Random.Next(256));
+                particlesToCreate -= 1;
 
-                ParticlesToCreate -= 1;
-                OrbitRadius += Rand.Next(120, 150);
+                var satellite = new Particle
+                {
+                    Color = planet.Color,
+                    Radius = Random.Next(3, 5)
+                };
+
+                var orbit = new OrbitPoint
+                {
+                    Color = planet.Color,
+                    X = planet.X,
+                    Y = planet.Y,
+                    Diametr = orbitRadius * 2
+                };
+
+                ResetParticle(satellite);
+
+                satellite.X = planet.X;
+                satellite.Y = planet.Y - orbitRadius;
+
+                Particles.Add(satellite);
+                planet.SattelitesOrbits.Add(orbit);
+                ImpactPoints.Add(orbit);
+
+                orbitRadius += Random.Next(7, 10);
             }
         }
     }
