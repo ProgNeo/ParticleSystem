@@ -25,7 +25,17 @@ namespace ParticleSystem.Particles
             var color = MixColor(ToColor, FromColor, k);
             var b = new SolidBrush(color);
 
-            g.FillEllipse(b, X - Radius, Y - Radius, Radius * 2, Radius * 2);
+            g.FillEllipse(b, X - Radius, Y - Radius, Radius * 2, Radius * 2); if (Selected == true)
+            {
+                g.DrawEllipse(
+                    new Pen(Color.Aqua, 3),
+                    X - Radius,
+                    Y - Radius,
+                    Radius * 2 + 1,
+                    Radius * 2 + 1
+                );
+            }
+
             b.Dispose();
         }
     }

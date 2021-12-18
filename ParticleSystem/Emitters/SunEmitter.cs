@@ -82,7 +82,7 @@ namespace ParticleSystem.Emitters
                 }
             }
 
-            while (RingPoint.X != 0 && Particles.Count < 175 && particlesToCreate > 0)
+            while (RingPoint.X != 0 && Particles.Count < 250 && particlesToCreate > 0)
             {
                 particlesToCreate -= 1;
                 var particle = new Asteroid
@@ -117,7 +117,7 @@ namespace ParticleSystem.Emitters
                     var particle = new Planet
                     {
                         Color = randomColor,
-                        Radius = Random.Next(6, 9),
+                        Radius = Random.Next(RadiusMin, RadiusMax),
                         Speed = 2
                     };
 
@@ -129,7 +129,7 @@ namespace ParticleSystem.Emitters
                 }
                 
                 PlanetsToCreate -= 1;
-                OrbitRadius += Random.Next(70, 80);
+                OrbitRadius += Random.Next(100, 120);
             }
         }
 
@@ -137,7 +137,7 @@ namespace ParticleSystem.Emitters
         private void CreateSattelitesOfPlanet(Planet planet)
         {
             var sattelitesToCreate = Random.Next(2, 4);
-            var orbitRadius = planet.Radius + 5;
+            var orbitRadius = planet.Radius + 11;
 
             while (sattelitesToCreate > 0)
             {
@@ -148,7 +148,7 @@ namespace ParticleSystem.Emitters
                 var satellite = new Sattelite
                 {
                     Color = randomColor,
-                    Radius = Random.Next(2, 4),
+                    Radius = Random.Next(4, 6),
                     Speed = Random.Next(1, 5)
                 };
 
@@ -170,7 +170,7 @@ namespace ParticleSystem.Emitters
                 planet.SattelitesOrbits.Add(orbit);
                 ImpactPoints.Insert(0, orbit);
 
-                orbitRadius += Random.Next(7, 10);
+                orbitRadius += 13;
             }
         }
     }

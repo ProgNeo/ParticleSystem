@@ -37,11 +37,14 @@
             this.changeOrbitsRangeVision = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.generateBtn = new System.Windows.Forms.ToolStripMenuItem();
+            this.sunAttractionTrackBar = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.selectedParticleSpeed = new System.Windows.Forms.TrackBar();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).BeginInit();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sunAttractionTrackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.selectedParticleSpeed)).BeginInit();
             this.SuspendLayout();
             // 
             // picDisplay
@@ -52,9 +55,10 @@
             this.picDisplay.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.picDisplay.Location = new System.Drawing.Point(12, 27);
             this.picDisplay.Name = "picDisplay";
-            this.picDisplay.Size = new System.Drawing.Size(1267, 922);
+            this.picDisplay.Size = new System.Drawing.Size(1523, 922);
             this.picDisplay.TabIndex = 0;
             this.picDisplay.TabStop = false;
+            this.picDisplay.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picDisplay_MouseClick);
             // 
             // timer1
             // 
@@ -68,7 +72,7 @@
             this.параметрыToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1584, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1734, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -113,33 +117,54 @@
             this.generateBtn.Text = "Создать новуюс систему";
             this.generateBtn.Click += new System.EventHandler(this.generateBtn_Click);
             // 
+            // sunAttractionTrackBar
+            // 
+            this.sunAttractionTrackBar.Location = new System.Drawing.Point(1541, 52);
+            this.sunAttractionTrackBar.Maximum = 50;
+            this.sunAttractionTrackBar.Minimum = -50;
+            this.sunAttractionTrackBar.Name = "sunAttractionTrackBar";
+            this.sunAttractionTrackBar.Size = new System.Drawing.Size(181, 45);
+            this.sunAttractionTrackBar.TabIndex = 3;
+            this.sunAttractionTrackBar.Value = 10;
+            this.sunAttractionTrackBar.Scroll += new System.EventHandler(this.sunAttractionTrackBar_Scroll);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1381, 43);
+            this.label1.Location = new System.Drawing.Point(1541, 34);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(103, 15);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Диаметры орбит:";
+            this.label1.Size = new System.Drawing.Size(122, 15);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Притяжение солнца:";
             // 
-            // trackBar1
+            // selectedParticleSpeed
             // 
-            this.trackBar1.Location = new System.Drawing.Point(1285, 904);
-            this.trackBar1.Maximum = 50;
-            this.trackBar1.Minimum = -50;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(287, 45);
-            this.trackBar1.TabIndex = 3;
-            this.trackBar1.Value = 10;
-            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            this.selectedParticleSpeed.Enabled = false;
+            this.selectedParticleSpeed.Location = new System.Drawing.Point(1541, 118);
+            this.selectedParticleSpeed.Maximum = 100;
+            this.selectedParticleSpeed.Name = "selectedParticleSpeed";
+            this.selectedParticleSpeed.Size = new System.Drawing.Size(181, 45);
+            this.selectedParticleSpeed.TabIndex = 5;
+            this.selectedParticleSpeed.Scroll += new System.EventHandler(this.selectedParticleSpeed_Scroll);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(1541, 100);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(178, 15);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Скорость выбранной частицы:";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1584, 961);
-            this.Controls.Add(this.trackBar1);
+            this.ClientSize = new System.Drawing.Size(1734, 961);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.selectedParticleSpeed);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.sunAttractionTrackBar);
             this.Controls.Add(this.picDisplay);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -151,7 +176,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sunAttractionTrackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.selectedParticleSpeed)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -167,7 +193,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem generateBtn;
         private System.Windows.Forms.ToolStripMenuItem changeOrbitsRangeVision;
+        private System.Windows.Forms.TrackBar sunAttractionTrackBar;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.TrackBar selectedParticleSpeed;
+        private System.Windows.Forms.Label label2;
     }
 }

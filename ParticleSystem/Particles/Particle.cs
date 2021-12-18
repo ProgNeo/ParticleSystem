@@ -19,6 +19,8 @@ namespace ParticleSystem.Particles
         public static Random Random = new();
         public Action<Particle, Particle>? OnOverlap;
 
+        public bool Selected = false;
+
         public Particle()
         {
             var direction = (double)Random.Next(360);
@@ -39,6 +41,16 @@ namespace ParticleSystem.Particles
             var b = new SolidBrush(color);
 
             g.FillEllipse(b, X - Radius, Y - Radius, Radius * 2, Radius * 2);
+            if (Selected == true)
+            {
+                g.DrawEllipse(
+                    new Pen(Color.Aqua, 3),
+                    X - Radius,
+                    Y - Radius,
+                    Radius * 2 + 1,
+                    Radius * 2 + 1
+                );
+            }
 
             b.Dispose();
         }

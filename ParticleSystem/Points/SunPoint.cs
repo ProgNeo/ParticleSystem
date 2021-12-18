@@ -13,7 +13,7 @@ namespace ParticleSystem.Points
             var gY = Y - particle.Y;
             var r = Math.Sqrt(gX * gX + gY * gY);
 
-            if (r > Diametr) return;
+            if (r > Diametr / 2) return;
 
             var r2 = Math.Max(100, gX * gX + gY * gY);
 
