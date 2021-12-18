@@ -1,7 +1,10 @@
 ﻿using ParticleSystem.Emitters;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using ParticleSystem.Particles;
+using ParticleSystem.Points;
 
 namespace ParticleSystem
 {
@@ -13,7 +16,7 @@ namespace ParticleSystem
 
         private readonly Random _random = new();
 
-        private TrackBar[] _trackBars;
+        private List<TrackBar> _trackBars = new();
 
         public MainForm()
         {
@@ -29,7 +32,7 @@ namespace ParticleSystem
             var planetsToCreate = _random.Next(2, 6);
             var orbitRadius = _random.Next(80, 120);
 
-            _sunEmitter = new SunEmitter()
+            _sunEmitter = new SunEmitter
             {
                 Direction = 0,
                 Spreading = 5,
@@ -37,14 +40,42 @@ namespace ParticleSystem
                 RadiusMax = 10,
                 GravitationX = 0,
                 GravitationY = 0,
-                SpeedMin = 1,
-                SpeedMax = 1,
+                SpeedMin = 2,
+                SpeedMax = 2,
                 PlanetsToCreate = planetsToCreate,
                 ParticlesPerTick = 1,
                 OrbitRadius = orbitRadius,
                 X = picDisplay.Width / 2,
-                Y = picDisplay.Height / 2
+                Y = picDisplay.Height / 2,
+                SunPoint = new SunPoint
+                {
+                    Diametr = 900,
+                    X = picDisplay.Width / 2f,
+                    Y = picDisplay.Height / 2f,
+                    Color = Color.FromArgb(200, Color.Yellow)
+                }
             };
+
+            _sunEmitter.Particles.Add(new Sun
+            {
+                X = picDisplay.Width /2f,
+                Y = picDisplay.Height /2f,
+                Radius = 40,
+                Color = Color.FromArgb(255, 252, 186, 32),
+                Speed = 0,
+                SpeedX = 0,
+                SpeedY = 0,
+            });
+
+            _sunEmitter.Particles[0].OnOverlap += (sun, particle1) =>
+            {
+                particle1.X = -100;
+                particle1.Y = -100;
+                particle1.SpeedX = 0;
+                particle1.SpeedY = 0;
+            };
+
+            _sunEmitter.ImpactPoints.Add(_sunEmitter.SunPoint);
 
             _sunEmitter.CreatePlanets();
         }
@@ -52,11 +83,14 @@ namespace ParticleSystem
         private void CreateTrackBars()
         {
             var space = 51;
-            _trackBars = new TrackBar[_sunEmitter.PlanetOrbitPoints.Count];
 
-            for (var i = 0; i < _trackBars.Length; i++)
+            _trackBars = new List<TrackBar>();
+
+            for (var i = 0; i < _sunEmitter.Particles.Count; i++)
             {
-                _trackBars[i] = new TrackBar()
+                if (_sunEmitter.Particles[i] is not Planet) continue;
+
+                var trackBar = new TrackBar
                 {
                     Name = i.ToString(),
                     Visible = true,
@@ -64,12 +98,14 @@ namespace ParticleSystem
                     Height = 45,
                     Width = 287,
                     Minimum = 0,
-                    Maximum = 1000,
-                    Value = (int)_sunEmitter.PlanetOrbitPoints[i].Diametr
+                    Maximum = 100,
+                    Value = (int) _sunEmitter.Particles[i].Speed * 10
                 };
-                _trackBars[i].Scroll += ChangeOrbitDiametr!;
-                this.Controls.Add(_trackBars[i]);
+                trackBar.Scroll += ChangePlanetSpeed!;
+                this.Controls.Add(trackBar);
                 space += 51;
+
+                _trackBars.Add(trackBar);
             }
         }
 
@@ -90,7 +126,7 @@ namespace ParticleSystem
                 _sunEmitter.RenderRangeOfImpactPoints(graphics);
             }
 
-            RenderSun(graphics);
+            //RenderSun(graphics);
             picDisplay.Invalidate();
         }
 
@@ -110,15 +146,16 @@ namespace ParticleSystem
             {
                 track.Dispose();
             }
-            _trackBars = Array.Empty<TrackBar>();
+
             GenerateSytem();
             CreateTrackBars();
+            trackBar1.Value = 10;
         }
 
-        private void ChangeOrbitDiametr(object sender, EventArgs e)
+        private void ChangePlanetSpeed(object sender, EventArgs e)
         {
             var track = sender as TrackBar;
-            _sunEmitter.PlanetOrbitPoints[int.Parse(track!.Name)].Diametr = track.Value;
+            _sunEmitter.Particles[int.Parse(track!.Name)].Speed = track.Value / 10f;
         }
 
         private void RenderSun(Graphics graphics)
@@ -144,6 +181,11 @@ namespace ParticleSystem
                 80,
                 80
             );
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            _sunEmitter.SunPoint.Power = trackBar1.Value / 10f;
         }
     }
 }

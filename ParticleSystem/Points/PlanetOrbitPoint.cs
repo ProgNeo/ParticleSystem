@@ -18,19 +18,19 @@ namespace ParticleSystem.Points
             switch (particle)
             {
                 case Sattelite sattelite:
-                    if (sattelite.IsOnPlanetOrbit == false)
-                    {
-                        particle.SpeedX += gX / r2;
-                        particle.SpeedY += gY / r2;
-                    }
+                    //if (sattelite.IsOnPlanetOrbit == false)
+                    //{
+                    //    particle.SpeedX += gX / r2;
+                    //    particle.SpeedY += gY / r2;
+                    //}
                     break;
                 case Asteroid:
-                    particle.SpeedX += gX * Diametr / r2;
-                    particle.SpeedY += gY * Diametr / r2;
+                    //particle.SpeedX += gX * Diametr / r2;
+                    //particle.SpeedY += gY * Diametr / r2;
                     break;
                 default:
-                    particle.SpeedX += gX / r2;
-                    particle.SpeedY += gY / r2;
+                    //particle.SpeedX += gX / r2 * 2;
+                    //particle.SpeedY += gY / r2 * 2;
                     break;
             }
         }

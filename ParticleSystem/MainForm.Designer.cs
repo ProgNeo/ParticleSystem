@@ -38,8 +38,10 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.generateBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // picDisplay
@@ -120,11 +122,23 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Диаметры орбит:";
             // 
+            // trackBar1
+            // 
+            this.trackBar1.Location = new System.Drawing.Point(1285, 904);
+            this.trackBar1.Maximum = 50;
+            this.trackBar1.Minimum = -50;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(287, 45);
+            this.trackBar1.TabIndex = 3;
+            this.trackBar1.Value = 10;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1584, 961);
+            this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.picDisplay);
             this.Controls.Add(this.menuStrip1);
@@ -137,6 +151,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -153,5 +168,6 @@
         private System.Windows.Forms.ToolStripMenuItem generateBtn;
         private System.Windows.Forms.ToolStripMenuItem changeOrbitsRangeVision;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TrackBar trackBar1;
     }
 }

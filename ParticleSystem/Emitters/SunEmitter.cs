@@ -12,9 +12,8 @@ namespace ParticleSystem.Emitters
         public float OrbitRadius;
 
         public Point RingPoint = new(0, 0);
-        public int RingSpeed;
-
-        public List<ImpactPoint> PlanetOrbitPoints = new();
+        
+        public SunPoint SunPoint = new();
 
         public Random Random = new();
 
@@ -24,10 +23,9 @@ namespace ParticleSystem.Emitters
             particle.Y = this.Y;
                 
             var direction = particle is Asteroid ? Random.Next(Spreading) : (Random.Next(2) == 1 ? 0 : 180);
-            var speed = particle is Asteroid ? RingSpeed : SpeedMin;
 
-            particle.SpeedX = (float)(Math.Cos(direction / 180f * Math.PI) * speed);
-            particle.SpeedY = -(float)(Math.Sin(direction / 180f * Math.PI) * speed);
+            particle.SpeedX = (float)(Math.Cos(direction / 180f * Math.PI) * particle.Speed);
+            particle.SpeedY = -(float)(Math.Sin(direction / 180f * Math.PI) * particle.Speed);
 
             particle.OnOverlap += (particle1, particle2) =>
             {
@@ -89,6 +87,7 @@ namespace ParticleSystem.Emitters
                 particlesToCreate -= 1;
                 var particle = new Asteroid
                 {
+                    Speed = 10,
                     FromColor = Color.White,
                     ToColor = Color.Gray,
                     Radius = Random.Next(5, 9)
@@ -107,28 +106,10 @@ namespace ParticleSystem.Emitters
             {
                 var randomColor = Color.FromArgb(Random.Next(256),
                     Random.Next(256), Random.Next(256));
-
-                ImpactPoint orbit = new PlanetOrbitPoint
-                {
-                    Color = randomColor,
-                    X = this.X,
-                    Y = this.Y,
-                    Diametr = OrbitRadius * 2,
-                    Range = 35
-                };
-
+                
                 if (RingPoint.X == 0 && Random.Next(10) % 4 == 2)
                 {
                     RingPoint = new Point(this.X, (int) (this.Y - OrbitRadius));
-                    RingSpeed = (int) Math.Sqrt(OrbitRadius * 2);
-                    orbit = new RingOrbitPoint
-                    {
-                        X = this.X,
-                        Y = this.Y,
-                        Diametr = OrbitRadius * 2,
-                        Color = Color.White,
-                        Range = 70,
-                    };
                 }
 
                 else
@@ -136,7 +117,8 @@ namespace ParticleSystem.Emitters
                     var particle = new Planet
                     {
                         Color = randomColor,
-                        Radius = Random.Next(6, 9)
+                        Radius = Random.Next(6, 9),
+                        Speed = 2
                     };
 
                     ResetParticle(particle);
@@ -145,9 +127,7 @@ namespace ParticleSystem.Emitters
                     CreateSattelitesOfPlanet(particle);
                     Particles.Add(particle);
                 }
-
-                PlanetOrbitPoints.Add(orbit);
-                ImpactPoints.Add(orbit);
+                
                 PlanetsToCreate -= 1;
                 OrbitRadius += Random.Next(70, 80);
             }
@@ -157,7 +137,7 @@ namespace ParticleSystem.Emitters
         private void CreateSattelitesOfPlanet(Planet planet)
         {
             var sattelitesToCreate = Random.Next(2, 4);
-            var orbitRadius = planet.Radius + 4;
+            var orbitRadius = planet.Radius + 5;
 
             while (sattelitesToCreate > 0)
             {
@@ -168,7 +148,8 @@ namespace ParticleSystem.Emitters
                 var satellite = new Sattelite
                 {
                     Color = randomColor,
-                    Radius = Random.Next(2, 4)
+                    Radius = Random.Next(2, 4),
+                    Speed = Random.Next(1, 5)
                 };
 
                 var orbit = new SatteliteOrbitPoint(planet)

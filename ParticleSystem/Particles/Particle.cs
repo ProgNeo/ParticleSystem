@@ -9,6 +9,8 @@ namespace ParticleSystem.Particles
         public float X;
         public float Y;
 
+        public float Speed;
+
         public float SpeedX;
         public float SpeedY;
         public float Life;

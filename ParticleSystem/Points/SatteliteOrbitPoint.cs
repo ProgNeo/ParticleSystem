@@ -23,15 +23,15 @@ namespace ParticleSystem.Points
 
             var r2 = Math.Max(100, gX * gX + gY * gY);
 
-            particle.SpeedX += gX / r2;
-            particle.SpeedY += gY / r2;
-
-            particle.X += Planet.SpeedX;
-            particle.Y += Planet.SpeedY;
-
-            if (particle is Sattelite sattelite)
+            switch (particle)
             {
-                sattelite.IsOnPlanetOrbit = true;
+                case Sattelite sattelite:
+                    particle.SpeedX += gX / r2 * particle.Speed * particle.Speed;
+                    particle.SpeedY += gY / r2 * particle.Speed * particle.Speed;
+                    particle.X += Planet.SpeedX;
+                    particle.Y += Planet.SpeedY;
+                    sattelite.IsOnPlanetOrbit = true;
+                    break;
             }
         }
     }
