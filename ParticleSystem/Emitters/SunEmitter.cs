@@ -1,5 +1,7 @@
 ﻿using System;
+using System.DirectoryServices.ActiveDirectory;
 using System.Drawing;
+using System.Runtime.InteropServices.ComTypes;
 using ParticleSystem.Particles;
 using ParticleSystem.Points;
 
@@ -17,41 +19,71 @@ namespace ParticleSystem.Emitters
 
         public override void ResetParticle(Particle particle)
         {
-            particle.Life = Random.Next(LifeMin, LifeMax);
-
             particle.X = this.X;
             particle.Y = this.Y;
-
-            var direction = Direction + (double)Particle.Random.Next(Spreading) - Spreading / 2f;
-            
+                
+            var direction = particle is Asteroid ? Random.Next(Spreading) : (Random.Next(2) == 1 ? 0 : 180);
             var speed = particle is Asteroid ? RingSpeed : SpeedMin;
 
-            particle.SpeedX = (float)(Math.Cos(direction / 180 * Math.PI) * speed);
-            particle.SpeedY = -(float)(Math.Sin(direction / 180 * Math.PI) * speed);
+            particle.SpeedX = (float)(Math.Cos(direction / 180f * Math.PI) * speed);
+            particle.SpeedY = -(float)(Math.Sin(direction / 180f * Math.PI) * speed);
+
+            particle.OnOverlap += (particle1, particle2) =>
+            {
+                if (particle1.Radius > particle2.Radius)
+                {
+                    particle2.SpeedY += particle1.SpeedY * particle1.Radius / particle2.Radius;
+                    particle2.SpeedX += particle1.SpeedX * particle1.Radius / particle2.Radius;
+
+                    particle1.SpeedY -= particle2.SpeedY * particle2.Radius / particle1.Radius;
+                    particle1.SpeedX -= particle2.SpeedX * particle2.Radius / particle1.Radius;
+                }
+                else
+                {
+                    particle1.SpeedY += particle2.SpeedY * particle2.Radius / particle1.Radius;
+                    particle1.SpeedX += particle2.SpeedX * particle2.Radius / particle1.Radius;
+
+                    particle2.SpeedY -= particle1.SpeedY * particle1.Radius / particle2.Radius;
+                    particle2.SpeedX -= particle1.SpeedX * particle1.Radius / particle2.Radius;
+                }
+            };
         }
 
         public override void UpdateState()
         {
             var particlesToCreate = ParticlesPerTick;
 
-            foreach (var particle in Particles)
+            for (var i = 0; i < Particles.Count; i++)
             {
-                foreach (var point in ImpactPoints)
+                for (var j = i + 1; j < Particles.Count; j++)
                 {
-                    point.ImpactParticle(particle);
+                    if (Particles[i] is not Asteroid && Particles[i].Overlaps(Particles[j]))
+                    {
+                        Particles[i].Overlap(Particles[j]);
+                    }
                 }
 
-                particle.X += particle.SpeedX;
-                particle.Y += particle.SpeedY;
+                if (Particles[i] is Sattelite sattelite)
+                {
+                    sattelite.IsOnPlanetOrbit = false;
+                }
+
+                foreach (var point in ImpactPoints)
+                {
+                    point.ImpactParticle(Particles[i]);
+                }
+
+                Particles[i].X += Particles[i].SpeedX;
+                Particles[i].Y += Particles[i].SpeedY;
 
 
-                if (particle is Planet planet)
+                if (Particles[i] is Planet planet)
                 {
                     planet.ChangeOrbitsPositions();
                 }
             }
 
-            while (Particles.Count < 300 && particlesToCreate > 0)
+            while (RingPoint.X != 0 && Particles.Count < 175 && particlesToCreate > 0)
             {
                 particlesToCreate -= 1;
                 var particle = new Asteroid
@@ -75,21 +107,29 @@ namespace ParticleSystem.Emitters
                 var randomColor = Color.FromArgb(Random.Next(256),
                     Random.Next(256), Random.Next(256));
 
-                var orbit = new PlanetOrbitPoint
+                ImpactPoint orbit = new PlanetOrbitPoint
                 {
                     Color = randomColor,
                     X = this.X,
                     Y = this.Y,
                     Diametr = OrbitRadius * 2,
+                    Range = 10
                 };
 
                 if (RingPoint.X == 0 && Random.Next(10) % 4 == 2)
                 {
                     RingPoint = new Point(this.X, (int) (this.Y - OrbitRadius));
                     RingSpeed = (int) Math.Sqrt(OrbitRadius * 2);
-                    orbit.Color = Color.White;
-                    orbit.Range = 70;
+                    orbit = new RingOrbitPoint
+                    {
+                        X = this.X,
+                        Y = this.Y,
+                        Diametr = OrbitRadius * 2,
+                        Color = Color.White,
+                        Range = 70,
+                    };
                 }
+
                 else
                 {
                     var particle = new Planet
@@ -134,7 +174,8 @@ namespace ParticleSystem.Emitters
                     Color = randomColor,
                     X = planet.X,
                     Y = planet.Y,
-                    Diametr = orbitRadius * 2
+                    Diametr = orbitRadius * 2,
+                    Range = 5
                 };
 
                 ResetParticle(satellite);

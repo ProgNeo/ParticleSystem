@@ -22,8 +22,6 @@ namespace ParticleSystem.Emitters
         public int SpeedMax = 10;
         public int RadiusMin = 2;
         public int RadiusMax = 10;
-        public int LifeMin = 20;
-        public int LifeMax = 100;
         public int ParticlesPerTick = 1;
 
         public Color ColorFrom = Color.White;
@@ -31,36 +29,17 @@ namespace ParticleSystem.Emitters
 
         public virtual void ResetParticle(Particle particle)
         {
-            particle.Life = Particle.Random.Next(LifeMin, LifeMax);
-
             particle.X = X;
             particle.Y = Y;
 
             var direction = Direction + (double)Particle.Random.Next(Spreading) - Spreading / 2f;
-
-            if (particle is ParticleColorful colorful)
-            {
-                colorful.FromColor = ColorFrom;
-                colorful.ToColor = ColorTo;
-            }
-
+            
             var speed = Particle.Random.Next(SpeedMin, SpeedMax);
 
             particle.SpeedX = (float)(Math.Cos(direction / 180 * Math.PI) * speed);
             particle.SpeedY = -(float)(Math.Sin(direction / 180 * Math.PI) * speed);
 
             particle.Radius = Particle.Random.Next(RadiusMin, RadiusMax);
-        }
-
-        public virtual Particle CreateParticle()
-        {
-            var particle = new ParticleColorful
-            {
-                FromColor = ColorFrom,
-                ToColor = ColorTo
-            };
-
-            return particle;
         }
 
         public virtual void UpdateState()
@@ -94,7 +73,7 @@ namespace ParticleSystem.Emitters
             while (particlesToCreate >= 1)
             {
                 particlesToCreate -= 1;
-                var particle = CreateParticle();
+                var particle = new Particle();
                 ResetParticle(particle);
                 Particles.Add(particle);
             }
@@ -113,6 +92,14 @@ namespace ParticleSystem.Emitters
             foreach (var point in ImpactPoints)
             {
                 point.Render(graphics);
+            }
+        }
+
+        public void RenderRangeOfImpactPoints(Graphics graphics)
+        {
+            foreach (var point in ImpactPoints)
+            {
+                point.RenderRange(graphics);
             }
         }
     }

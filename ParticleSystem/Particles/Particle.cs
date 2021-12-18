@@ -5,16 +5,17 @@ namespace ParticleSystem.Particles
 {
     public class Particle
     {
-        public int Radius; 
+        public int Radius;
         public float X;
-        public float Y; 
+        public float Y;
 
-        public float SpeedX; 
-        public float SpeedY; 
+        public float SpeedX;
+        public float SpeedY;
         public float Life;
 
-        public static Random Random = new Random();
         public Color Color = Color.White;
+        public static Random Random = new();
+        public Action<Particle, Particle>? OnOverlap;
 
         public Particle()
         {
@@ -38,6 +39,19 @@ namespace ParticleSystem.Particles
             g.FillEllipse(b, X - Radius, Y - Radius, Radius * 2, Radius * 2);
 
             b.Dispose();
+        }
+
+        public virtual bool Overlaps(Particle particle)
+        {
+            var distance = Math.Sqrt((particle.X - X) * (particle.X - X) + (particle.Y - Y) * (particle.Y - Y));
+
+            return distance <= particle.Radius + Radius;
+        }
+
+        //Вызов делегата при пересечении
+        public virtual void Overlap(Particle particle)
+        {
+            OnOverlap?.Invoke(this, particle);
         }
     }
 }

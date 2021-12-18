@@ -6,9 +6,6 @@ namespace ParticleSystem.Points
 {
     public class SatteliteOrbitPoint : ImpactPoint
     {
-        public float Diametr;
-        // ReSharper disable once InconsistentNaming
-        public Color Color = Color.White;
         public Planet Planet;
 
         public SatteliteOrbitPoint(Planet planet)
@@ -22,7 +19,7 @@ namespace ParticleSystem.Points
             var gY = Y - particle.Y;
             var r = Math.Sqrt(gX * gX + gY * gY);
             
-            if (r > (Diametr + 5) / 2 || r < (Diametr - 5) / 2) return;
+            if (r > (Diametr + Range) / 2 || r < (Diametr - Range) / 2) return;
 
             var r2 = Math.Max(100, gX * gX + gY * gY);
 
@@ -31,17 +28,11 @@ namespace ParticleSystem.Points
 
             particle.X += Planet.SpeedX;
             particle.Y += Planet.SpeedY;
-        }
 
-        public override void Render(Graphics graphics)
-        {
-            graphics.DrawEllipse(
-                new Pen(Color),
-                X - Diametr / 2f,
-                Y - Diametr / 2f,
-                Diametr,
-                Diametr
-            );
+            if (particle is Sattelite sattelite)
+            {
+                sattelite.IsOnPlanetOrbit = true;
+            }
         }
     }
 }

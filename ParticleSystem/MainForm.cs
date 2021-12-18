@@ -9,6 +9,7 @@ namespace ParticleSystem
     {
         private SunEmitter _sunEmitter = new();
         private bool _isOrbitsActive = true;
+        private bool _isRangeOfOrbitsActive = false;
 
         private readonly Random _random = new();
 
@@ -35,8 +36,6 @@ namespace ParticleSystem
                 GravitationY = 0,
                 SpeedMin = 1,
                 SpeedMax = 1,
-                LifeMin = 10,
-                LifeMax = 100,
                 PlanetsToCreate = planetsToCreate,
                 ParticlesPerTick = 1,
                 OrbitRadius = orbitRadius,
@@ -59,6 +58,11 @@ namespace ParticleSystem
                 _sunEmitter.RenderImpactPoints(graphics);
             }
 
+            if (_isRangeOfOrbitsActive)
+            {
+                _sunEmitter.RenderRangeOfImpactPoints(graphics);
+            }
+
             RenderSun(graphics);
             picDisplay.Invalidate();
         }
@@ -66,6 +70,16 @@ namespace ParticleSystem
         private void changeOrbitsVision_Click(object sender, EventArgs e)
         {
             _isOrbitsActive = !_isOrbitsActive;
+        }
+
+        private void changeOrbitsRangeVision_Click(object sender, EventArgs e)
+        {
+            _isRangeOfOrbitsActive = !_isRangeOfOrbitsActive;
+        }
+
+        private void generateBtn_Click(object sender, EventArgs e)
+        {
+            GenerateSytem();
         }
 
         private void RenderSun(Graphics graphics)
