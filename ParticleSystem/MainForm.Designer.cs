@@ -37,6 +37,7 @@
             this.changeOrbitsRangeVision = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.generateBtn = new System.Windows.Forms.ToolStripMenuItem();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -49,7 +50,7 @@
             this.picDisplay.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.picDisplay.Location = new System.Drawing.Point(12, 27);
             this.picDisplay.Name = "picDisplay";
-            this.picDisplay.Size = new System.Drawing.Size(1267, 822);
+            this.picDisplay.Size = new System.Drawing.Size(1267, 922);
             this.picDisplay.TabIndex = 0;
             this.picDisplay.TabStop = false;
             // 
@@ -86,7 +87,7 @@
             this.changeOrbitsVision.CheckOnClick = true;
             this.changeOrbitsVision.CheckState = System.Windows.Forms.CheckState.Checked;
             this.changeOrbitsVision.Name = "changeOrbitsVision";
-            this.changeOrbitsVision.Size = new System.Drawing.Size(257, 22);
+            this.changeOrbitsVision.Size = new System.Drawing.Size(260, 22);
             this.changeOrbitsVision.Text = "Отображать орбиты";
             this.changeOrbitsVision.Click += new System.EventHandler(this.changeOrbitsVision_Click);
             // 
@@ -94,31 +95,44 @@
             // 
             this.changeOrbitsRangeVision.CheckOnClick = true;
             this.changeOrbitsRangeVision.Name = "changeOrbitsRangeVision";
-            this.changeOrbitsRangeVision.Size = new System.Drawing.Size(257, 22);
-            this.changeOrbitsRangeVision.Text = "Отображать зону действия орбит";
+            this.changeOrbitsRangeVision.Size = new System.Drawing.Size(260, 22);
+            this.changeOrbitsRangeVision.Text = "Отображать зоны действия орбит";
             this.changeOrbitsRangeVision.Click += new System.EventHandler(this.changeOrbitsRangeVision_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(254, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(257, 6);
             // 
             // generateBtn
             // 
             this.generateBtn.Name = "generateBtn";
-            this.generateBtn.Size = new System.Drawing.Size(257, 22);
+            this.generateBtn.Size = new System.Drawing.Size(260, 22);
             this.generateBtn.Text = "Создать новуюс систему";
             this.generateBtn.Click += new System.EventHandler(this.generateBtn_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(1381, 43);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(103, 15);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Диаметры орбит:";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1584, 861);
+            this.ClientSize = new System.Drawing.Size(1584, 961);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.picDisplay);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Солненчная система";
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).EndInit();
             this.menuStrip1.ResumeLayout(false);
@@ -138,5 +152,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem generateBtn;
         private System.Windows.Forms.ToolStripMenuItem changeOrbitsRangeVision;
+        private System.Windows.Forms.Label label1;
     }
 }

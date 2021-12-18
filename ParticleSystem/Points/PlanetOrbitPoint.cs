@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using ParticleSystem.Particles;
 
 namespace ParticleSystem.Points
@@ -21,7 +20,7 @@ namespace ParticleSystem.Points
                 case Sattelite sattelite:
                     if (sattelite.IsOnPlanetOrbit == false)
                     {
-                        particle.SpeedX += gX* Diametr / r2;
+                        particle.SpeedX += gX / r2;
                         particle.SpeedY += gY / r2;
                     }
                     break;
