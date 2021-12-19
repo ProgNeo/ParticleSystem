@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using ParticleSystem.Particles;
 using ParticleSystem.Points;
@@ -14,9 +13,7 @@ namespace ParticleSystem.Emitters
         public Point RingPoint = new(0, 0);
         
         public SunPoint SunPoint = new();
-
-        public Random Random = new();
-
+        
         public override void ResetParticle(Particle particle)
         {
             particle.X = this.X;
@@ -129,7 +126,7 @@ namespace ParticleSystem.Emitters
                 }
                 
                 PlanetsToCreate -= 1;
-                OrbitRadius += Random.Next(100, 120);
+                OrbitRadius += Random.Next(110, 140);
             }
         }
 
@@ -152,14 +149,6 @@ namespace ParticleSystem.Emitters
                     Speed = Random.Next(1, 5)
                 };
 
-                var orbit = new SatteliteOrbitPoint(planet)
-                {
-                    Color = randomColor,
-                    X = planet.X,
-                    Y = planet.Y,
-                    Diametr = orbitRadius * 2,
-                    Range = 5
-                };
 
                 ResetParticle(satellite);
 
@@ -167,11 +156,18 @@ namespace ParticleSystem.Emitters
                 satellite.Y = planet.Y - orbitRadius;
 
                 Particles.Add(satellite);
-                planet.SattelitesOrbits.Add(orbit);
-                ImpactPoints.Insert(0, orbit);
-
                 orbitRadius += 13;
             }
+            var orbit = new SatteliteOrbitPoint(planet)
+            {
+                Color = planet.Color,
+                X = planet.X,
+                Y = planet.Y,
+                Diametr = orbitRadius * 2
+            };
+
+            planet.SattelitesOrbits.Add(orbit);
+            ImpactPoints.Insert(0, orbit);
         }
     }
 }

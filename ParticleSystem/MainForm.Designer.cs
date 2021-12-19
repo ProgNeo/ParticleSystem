@@ -33,8 +33,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.параметрыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeOrbitsVision = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeOrbitsRangeVision = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeAttractionVision = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.generateBtn = new System.Windows.Forms.ToolStripMenuItem();
             this.sunAttractionTrackBar = new System.Windows.Forms.TrackBar();
@@ -79,41 +78,32 @@
             // параметрыToolStripMenuItem
             // 
             this.параметрыToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.changeOrbitsVision,
-            this.changeOrbitsRangeVision,
+            this.changeAttractionVision,
             this.toolStripSeparator1,
             this.generateBtn});
             this.параметрыToolStripMenuItem.Name = "параметрыToolStripMenuItem";
             this.параметрыToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
             this.параметрыToolStripMenuItem.Text = "Параметры";
             // 
-            // changeOrbitsVision
+            // changeAttractionVision
             // 
-            this.changeOrbitsVision.Checked = true;
-            this.changeOrbitsVision.CheckOnClick = true;
-            this.changeOrbitsVision.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.changeOrbitsVision.Name = "changeOrbitsVision";
-            this.changeOrbitsVision.Size = new System.Drawing.Size(260, 22);
-            this.changeOrbitsVision.Text = "Отображать орбиты";
-            this.changeOrbitsVision.Click += new System.EventHandler(this.changeOrbitsVision_Click);
-            // 
-            // changeOrbitsRangeVision
-            // 
-            this.changeOrbitsRangeVision.CheckOnClick = true;
-            this.changeOrbitsRangeVision.Name = "changeOrbitsRangeVision";
-            this.changeOrbitsRangeVision.Size = new System.Drawing.Size(260, 22);
-            this.changeOrbitsRangeVision.Text = "Отображать зоны действия орбит";
-            this.changeOrbitsRangeVision.Click += new System.EventHandler(this.changeOrbitsRangeVision_Click);
+            this.changeAttractionVision.Checked = true;
+            this.changeAttractionVision.CheckOnClick = true;
+            this.changeAttractionVision.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.changeAttractionVision.Name = "changeAttractionVision";
+            this.changeAttractionVision.Size = new System.Drawing.Size(259, 22);
+            this.changeAttractionVision.Text = "Отображать области притяжения";
+            this.changeAttractionVision.Click += new System.EventHandler(this.changeAttractionVision_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(257, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(256, 6);
             // 
             // generateBtn
             // 
             this.generateBtn.Name = "generateBtn";
-            this.generateBtn.Size = new System.Drawing.Size(260, 22);
+            this.generateBtn.Size = new System.Drawing.Size(259, 22);
             this.generateBtn.Text = "Создать новуюс систему";
             this.generateBtn.Click += new System.EventHandler(this.generateBtn_Click);
             // 
@@ -189,10 +179,9 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem параметрыToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem changeOrbitsVision;
+        private System.Windows.Forms.ToolStripMenuItem changeAttractionVision;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem generateBtn;
-        private System.Windows.Forms.ToolStripMenuItem changeOrbitsRangeVision;
         private System.Windows.Forms.TrackBar sunAttractionTrackBar;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TrackBar selectedParticleSpeed;

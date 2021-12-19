@@ -25,7 +25,6 @@ namespace ParticleSystem.Points
                         particle.SpeedX += gX / r2 * particle.Speed * particle.Speed * Power;
                         particle.SpeedY += gY / r2 * particle.Speed * particle.Speed * Power;
                     }
-
                     break;
                 default:
                     particle.SpeedX += gX / r2 * particle.Speed * particle.Speed * Power;

@@ -8,6 +8,8 @@ namespace ParticleSystem.Emitters
 {
     public class Emitter
     {
+        public Random Random = new();
+
         public List<Particle> Particles = new();
         public List<ImpactPoint> ImpactPoints = new();
         
@@ -23,23 +25,20 @@ namespace ParticleSystem.Emitters
         public int RadiusMin = 2;
         public int RadiusMax = 10;
         public int ParticlesPerTick = 1;
-
-        public Color ColorFrom = Color.White;
-        public Color ColorTo = Color.FromArgb(0, Color.Black);
-
+        
         public virtual void ResetParticle(Particle particle)
         {
             particle.X = X;
             particle.Y = Y;
 
-            var direction = Direction + (double)Particle.Random.Next(Spreading) - Spreading / 2f;
+            var direction = Direction + (double)Random.Next(Spreading) - Spreading / 2f;
             
-            var speed = Particle.Random.Next(SpeedMin, SpeedMax);
+            var speed = Random.Next(SpeedMin, SpeedMax);
 
             particle.SpeedX = (float)(Math.Cos(direction / 180 * Math.PI) * speed);
             particle.SpeedY = -(float)(Math.Sin(direction / 180 * Math.PI) * speed);
 
-            particle.Radius = Particle.Random.Next(RadiusMin, RadiusMax);
+            particle.Radius = Random.Next(RadiusMin, RadiusMax);
         }
 
         public virtual void UpdateState()
@@ -92,14 +91,6 @@ namespace ParticleSystem.Emitters
             foreach (var point in ImpactPoints)
             {
                 point.Render(graphics);
-            }
-        }
-
-        public void RenderRangeOfImpactPoints(Graphics graphics)
-        {
-            foreach (var point in ImpactPoints)
-            {
-                point.RenderRange(graphics);
             }
         }
     }

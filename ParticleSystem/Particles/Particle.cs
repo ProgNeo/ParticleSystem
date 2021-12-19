@@ -5,6 +5,8 @@ namespace ParticleSystem.Particles
 {
     public class Particle
     {
+        private static readonly Random Random = new();
+
         public int Radius;
         public float X;
         public float Y;
@@ -16,7 +18,6 @@ namespace ParticleSystem.Particles
         public float Life;
 
         public Color Color = Color.White;
-        public static Random Random = new();
         public Action<Particle, Particle>? OnOverlap;
 
         public bool Selected = false;
@@ -47,8 +48,8 @@ namespace ParticleSystem.Particles
                     new Pen(Color.Aqua, 3),
                     X - Radius,
                     Y - Radius,
-                    Radius * 2 + 1,
-                    Radius * 2 + 1
+                    Radius * 2,
+                    Radius * 2
                 );
             }
 
@@ -61,8 +62,7 @@ namespace ParticleSystem.Particles
 
             return distance <= particle.Radius + Radius;
         }
-
-        //Вызов делегата при пересечении
+        
         public virtual void Overlap(Particle particle)
         {
             OnOverlap?.Invoke(this, particle);

@@ -1,6 +1,5 @@
 ﻿using ParticleSystem.Emitters;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,8 +12,7 @@ namespace ParticleSystem
     {
         private SunEmitter _sunEmitter = new();
 
-        private bool _isOrbitsActive = true;
-        private bool _isRangeOfOrbitsActive = false;
+        private bool _isAttractionVisible = true;
 
         private readonly Random _random = new();
         private Particle? _selectedParticle = null;
@@ -86,29 +84,21 @@ namespace ParticleSystem
 
             _sunEmitter.UpdateState();
             _sunEmitter.RenderParticles(graphics);
-            if (_isOrbitsActive)
+            if (_isAttractionVisible)
             {
                 _sunEmitter.RenderImpactPoints(graphics);
-            }
-
-            if (_isRangeOfOrbitsActive)
-            {
-                _sunEmitter.RenderRangeOfImpactPoints(graphics);
             }
             
             picDisplay.Invalidate();
         }
 
-        private void changeOrbitsVision_Click(object sender, EventArgs e)
+        //Переключение отображения орбит
+        private void changeAttractionVision_Click(object sender, EventArgs e)
         {
-            _isOrbitsActive = !_isOrbitsActive;
+            _isAttractionVisible = !_isAttractionVisible;
         }
 
-        private void changeOrbitsRangeVision_Click(object sender, EventArgs e)
-        {
-            _isRangeOfOrbitsActive = !_isRangeOfOrbitsActive;
-        }
-
+        //Пересоздание системы
         private void generateBtn_Click(object sender, EventArgs e)
         {
             GenerateSytem();
@@ -116,11 +106,13 @@ namespace ParticleSystem
             sunAttractionTrackBar.Value = 10;
         }
         
+        //Изменение силы притяжения солнца
         private void sunAttractionTrackBar_Scroll(object sender, EventArgs e)
         {
             _sunEmitter.SunPoint.Power = sunAttractionTrackBar.Value / 10f;
         }
 
+        //Выбор частицы нажатием кнопки мыши
         private void picDisplay_MouseClick(object sender, MouseEventArgs e)
         {
             if (_selectedParticle != null)
@@ -143,6 +135,7 @@ namespace ParticleSystem
             }
         }
 
+        //Изменение скорости выбранной частицы
         private void selectedParticleSpeed_Scroll(object sender, EventArgs e)
         {
             _selectedParticle!.Speed = selectedParticleSpeed.Value / 10f;
