@@ -75,6 +75,11 @@ namespace ParticleSystem
             _sunEmitter.ImpactPoints.Add(_sunEmitter.SunPoint);
 
             _sunEmitter.CreatePlanets();
+
+            if (_sunEmitter.RingPoint.X != 0)
+            {
+                asteroidsSpeedTrack.Enabled = true;
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -101,9 +106,10 @@ namespace ParticleSystem
         //Пересоздание системы
         private void generateBtn_Click(object sender, EventArgs e)
         {
-            GenerateSytem();
+            asteroidsSpeedTrack.Enabled = false;
             selectedParticleSpeed.Enabled = false;
             sunAttractionTrackBar.Value = 10;
+            GenerateSytem();
         }
         
         //Изменение силы притяжения солнца
@@ -139,6 +145,15 @@ namespace ParticleSystem
         private void selectedParticleSpeed_Scroll(object sender, EventArgs e)
         {
             _selectedParticle!.Speed = selectedParticleSpeed.Value / 10f;
+        }
+
+        private void asteroidsSpeedTrack_Scroll(object sender, EventArgs e)
+        {
+            _sunEmitter.AsteroidsSpeed = asteroidsSpeedTrack.Value / 10f;
+            foreach (var asteroid in _sunEmitter.Asteroids)
+            {
+                asteroid.Speed = asteroidsSpeedTrack.Value / 10f;
+            }
         }
     }
 }

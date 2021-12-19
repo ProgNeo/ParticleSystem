@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using ParticleSystem.Particles;
 using ParticleSystem.Points;
@@ -9,6 +10,8 @@ namespace ParticleSystem.Emitters
     {
         public int PlanetsToCreate;
         public float OrbitRadius;
+        public List<Asteroid> Asteroids = new();
+        public float AsteroidsSpeed = 10;
 
         public Point RingPoint = new(0, 0);
         
@@ -84,7 +87,7 @@ namespace ParticleSystem.Emitters
                 particlesToCreate -= 1;
                 var particle = new Asteroid
                 {
-                    Speed = 10,
+                    Speed = AsteroidsSpeed,
                     FromColor = Color.White,
                     ToColor = Color.Gray,
                     Radius = Random.Next(5, 9)
@@ -92,6 +95,7 @@ namespace ParticleSystem.Emitters
                 ResetParticle(particle);
                 particle.X = RingPoint.X;
                 particle.Y = RingPoint.Y;
+                Asteroids.Add(particle);
                 Particles.Add(particle);
             }
         }
@@ -158,6 +162,7 @@ namespace ParticleSystem.Emitters
                 Particles.Add(satellite);
                 orbitRadius += 13;
             }
+
             var orbit = new SatteliteOrbitPoint(planet)
             {
                 Color = planet.Color,

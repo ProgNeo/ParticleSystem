@@ -40,10 +40,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.selectedParticleSpeed = new System.Windows.Forms.TrackBar();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.asteroidsSpeedTrack = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sunAttractionTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedParticleSpeed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.asteroidsSpeedTrack)).BeginInit();
             this.SuspendLayout();
             // 
             // picDisplay
@@ -146,11 +149,33 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "Скорость выбранной частицы:";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(1541, 166);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(168, 15);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Общая скорость астероидов:";
+            // 
+            // asteroidsSpeedTrack
+            // 
+            this.asteroidsSpeedTrack.Enabled = false;
+            this.asteroidsSpeedTrack.Location = new System.Drawing.Point(1541, 184);
+            this.asteroidsSpeedTrack.Maximum = 100;
+            this.asteroidsSpeedTrack.Name = "asteroidsSpeedTrack";
+            this.asteroidsSpeedTrack.Size = new System.Drawing.Size(181, 45);
+            this.asteroidsSpeedTrack.TabIndex = 8;
+            this.asteroidsSpeedTrack.Value = 100;
+            this.asteroidsSpeedTrack.Scroll += new System.EventHandler(this.asteroidsSpeedTrack_Scroll);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1734, 961);
+            this.Controls.Add(this.asteroidsSpeedTrack);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.selectedParticleSpeed);
             this.Controls.Add(this.label1);
@@ -168,6 +193,7 @@
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sunAttractionTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedParticleSpeed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.asteroidsSpeedTrack)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -186,5 +212,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TrackBar selectedParticleSpeed;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TrackBar asteroidsSpeedTrack;
     }
 }
