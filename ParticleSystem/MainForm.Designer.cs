@@ -131,12 +131,15 @@
             "3"});
             this.planetsCountComboBox.Name = "planetsCountComboBox";
             this.planetsCountComboBox.Size = new System.Drawing.Size(121, 23);
-            this.planetsCountComboBox.Text = "1";
+            this.planetsCountComboBox.Text = "3";
             this.planetsCountComboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.planetsCountComboBox_KeyPress);
             this.planetsCountComboBox.TextChanged += new System.EventHandler(this.planetsCountComboBox_TextChanged);
             // 
             // isRingNecessary
             // 
+            this.isRingNecessary.Checked = true;
+            this.isRingNecessary.CheckOnClick = true;
+            this.isRingNecessary.CheckState = System.Windows.Forms.CheckState.Checked;
             this.isRingNecessary.Name = "isRingNecessary";
             this.isRingNecessary.Size = new System.Drawing.Size(245, 22);
             this.isRingNecessary.Text = "Создавать астероидное кольцо";

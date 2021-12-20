@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using ParticleSystem.Particles;
 using ParticleSystem.Points;
 
@@ -11,7 +12,7 @@ namespace ParticleSystem.Emitters
         public int PlanetsToCreate;
         public float OrbitRadius;
         public List<Asteroid> Asteroids = new();
-        public float AsteroidsSpeed = 10;
+        public float AsteroidsSpeed = 2;
         public bool IsRingNecessary = false;
 
         public Point RingPoint = new(0, 0);
@@ -30,7 +31,7 @@ namespace ParticleSystem.Emitters
 
             particle.OnOverlap += (particle1, particle2) =>
             {
-                if (particle1.Radius > particle2.Radius)
+                if (particle1.Speed > particle2.Speed)
                 {
                     particle2.SpeedY += particle1.SpeedY * particle1.Radius / particle2.Radius;
                     particle2.SpeedX += particle1.SpeedX * particle1.Radius / particle2.Radius;
@@ -51,8 +52,6 @@ namespace ParticleSystem.Emitters
 
         public override void UpdateState()
         {
-            var particlesToCreate = ParticlesPerTick;
-
             for (var i = 0; i < Particles.Count; i++)
             {
                 for (var j = i + 1; j < Particles.Count; j++)
@@ -82,23 +81,6 @@ namespace ParticleSystem.Emitters
                     planet.ChangeOrbitsPositions();
                 }
             }
-
-            while (RingPoint.X != 0 && Particles.Count < 250 && particlesToCreate > 0)
-            {
-                particlesToCreate -= 1;
-                var particle = new Asteroid
-                {
-                    Speed = AsteroidsSpeed,
-                    FromColor = Color.White,
-                    ToColor = Color.Gray,
-                    Radius = Random.Next(5, 9)
-                };
-                ResetParticle(particle);
-                particle.X = RingPoint.X;
-                particle.Y = RingPoint.Y;
-                Asteroids.Add(particle);
-                Particles.Add(particle);
-            }
         }
 
         //Создаются планеты и их орбиты
@@ -112,10 +94,12 @@ namespace ParticleSystem.Emitters
                 if (PlanetsToCreate == 1 && IsRingNecessary == true && RingPoint.X == 0)
                 {
                     RingPoint = new Point(this.X, (int)(this.Y - OrbitRadius));
+                    CreateRing();
                 }
                 else if (IsRingNecessary == true && RingPoint.X == 0 && Random.Next(10) % 4 == 2)
                 {
                     RingPoint = new Point(this.X, (int) (this.Y - OrbitRadius));
+                    CreateRing();
                 }
                 else
                 {
@@ -154,7 +138,7 @@ namespace ParticleSystem.Emitters
                 {
                     Color = randomColor,
                     Radius = Random.Next(4, 6),
-                    Speed = Random.Next(1, 5)
+                    Speed = Random.Next(1, 3)
                 };
 
 
@@ -177,6 +161,29 @@ namespace ParticleSystem.Emitters
 
             planet.SattelitesOrbits.Add(orbit);
             ImpactPoints.Insert(0, orbit);
+        }
+
+        private async void CreateRing()
+        {
+            var asteroidsToCreater = 2 * Math.PI *
+                                     Math.Sqrt((RingPoint.X - X) * (RingPoint.X - X) + (RingPoint.Y - Y) * (RingPoint.Y - Y)) / 15;
+
+            while (RingPoint.X != 0 && Particles.Count < asteroidsToCreater)
+            {
+                var particle = new Asteroid
+                {
+                    Speed = AsteroidsSpeed,
+                    FromColor = Color.White,
+                    ToColor = Color.Gray,
+                    Radius = Random.Next(5, 9)
+                };
+                ResetParticle(particle);
+                particle.X = RingPoint.X;
+                particle.Y = RingPoint.Y;
+                Asteroids.Add(particle);
+                Particles.Add(particle);
+                await Task.Delay(250);
+            }
         }
     }
 }

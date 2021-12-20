@@ -11,8 +11,8 @@ namespace ParticleSystem
     public partial class MainForm : Form
     {
         private SunEmitter _sunEmitter = new();
-        private int _planetsToCreate = 1;
-        private bool _isRingNecessary = false;
+        private int _planetsToCreate = 3;
+        private bool _isRingNecessary = true;
 
         private bool _isAttractionVisible = true;
         
@@ -40,7 +40,6 @@ namespace ParticleSystem
                 SpeedMax = 2,
                 PlanetsToCreate = _planetsToCreate,
                 IsRingNecessary = _isRingNecessary,
-                ParticlesPerTick = 1,
                 OrbitRadius = 150,
                 X = picDisplay.Width / 2,
                 Y = picDisplay.Height / 2,
