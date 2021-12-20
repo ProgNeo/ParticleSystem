@@ -12,6 +12,7 @@ namespace ParticleSystem.Emitters
         public float OrbitRadius;
         public List<Asteroid> Asteroids = new();
         public float AsteroidsSpeed = 10;
+        public bool IsRingNecessary = false;
 
         public Point RingPoint = new(0, 0);
         
@@ -107,12 +108,15 @@ namespace ParticleSystem.Emitters
             {
                 var randomColor = Color.FromArgb(Random.Next(256),
                     Random.Next(256), Random.Next(256));
-                
-                if (RingPoint.X == 0 && Random.Next(10) % 4 == 2)
+
+                if (PlanetsToCreate == 1 && IsRingNecessary == true && RingPoint.X == 0)
+                {
+                    RingPoint = new Point(this.X, (int)(this.Y - OrbitRadius));
+                }
+                else if (IsRingNecessary == true && RingPoint.X == 0 && Random.Next(10) % 4 == 2)
                 {
                     RingPoint = new Point(this.X, (int) (this.Y - OrbitRadius));
                 }
-
                 else
                 {
                     var particle = new Planet

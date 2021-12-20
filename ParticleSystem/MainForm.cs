@@ -1,20 +1,21 @@
-﻿using ParticleSystem.Emitters;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using ParticleSystem.Particles;
 using ParticleSystem.Points;
+using ParticleSystem.Emitters;
 
 namespace ParticleSystem
 {
     public partial class MainForm : Form
     {
         private SunEmitter _sunEmitter = new();
+        private int _planetsToCreate = 1;
+        private bool _isRingNecessary = false;
 
         private bool _isAttractionVisible = true;
-
-        private readonly Random _random = new();
+        
         private Particle? _selectedParticle = null;
 
         public MainForm()
@@ -26,9 +27,7 @@ namespace ParticleSystem
         private void GenerateSytem()
         {
             picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
-
-            var planetsToCreate = _random.Next(2, 4);
-
+            
             _sunEmitter = new SunEmitter
             {
                 Direction = 0,
@@ -39,7 +38,8 @@ namespace ParticleSystem
                 GravitationY = 0,
                 SpeedMin = 2,
                 SpeedMax = 2,
-                PlanetsToCreate = planetsToCreate,
+                PlanetsToCreate = _planetsToCreate,
+                IsRingNecessary = _isRingNecessary,
                 ParticlesPerTick = 1,
                 OrbitRadius = 150,
                 X = picDisplay.Width / 2,
@@ -108,6 +108,7 @@ namespace ParticleSystem
         {
             asteroidsSpeedTrack.Enabled = false;
             selectedParticleSpeed.Enabled = false;
+            asteroidsSpeedTrack.Value = 100;
             sunAttractionTrackBar.Value = 10;
             GenerateSytem();
         }
@@ -154,6 +155,26 @@ namespace ParticleSystem
             {
                 asteroid.Speed = asteroidsSpeedTrack.Value / 10f;
             }
+        }
+
+        private void planetsCountComboBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void planetsCountComboBox_TextChanged(object sender, EventArgs e)
+        {
+            _planetsToCreate = int.Parse(planetsCountComboBox.Text);
+        }
+
+        private void isRingNecessary_Click(object sender, EventArgs e)
+        {
+            _isRingNecessary = !_isRingNecessary;
+        }
+
+        private void sunAttractionRadiusTrack_Scroll(object sender, EventArgs e)
+        {
+            _sunEmitter.SunPoint.Diametr = sunAttractionRadiusTrack.Value * 2;
         }
     }
 }
