@@ -213,7 +213,7 @@
             this.asteroidsSpeedTrack.Name = "asteroidsSpeedTrack";
             this.asteroidsSpeedTrack.Size = new System.Drawing.Size(181, 45);
             this.asteroidsSpeedTrack.TabIndex = 4;
-            this.asteroidsSpeedTrack.Value = 100;
+            this.asteroidsSpeedTrack.Value = 20;
             this.asteroidsSpeedTrack.Scroll += new System.EventHandler(this.asteroidsSpeedTrack_Scroll);
             // 
             // label4

@@ -107,7 +107,7 @@ namespace ParticleSystem
         {
             asteroidsSpeedTrack.Enabled = false;
             selectedParticleSpeed.Enabled = false;
-            asteroidsSpeedTrack.Value = 100;
+            asteroidsSpeedTrack.Value = 20;
             sunAttractionTrackBar.Value = 10;
             GenerateSytem();
         }
